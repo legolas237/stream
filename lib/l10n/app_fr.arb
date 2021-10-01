@@ -2,5 +2,81 @@
   "helloWorld": "Bonjour le monde!",
   "@helloWorld": {
     "description": "L’accueil du programmeur nouveau-né conventionnel"
+  },
+  "globalConfigMessage": "Configurer votre application",
+  "@globalConfigMessage": {
+    "description": ""
+  },
+  "globalConfigMessageNotice": "Les configurations appliquées seront  persistantes mais vous pourrez les modifier plus tard.",
+  "@globalConfigMessageNotice": {
+    "description": ""
+  },
+  "theme": "Thème",
+  "@theme": {
+    "description": ""
+  },
+  "defaultTheme": "Le thème par défaut: brillance",
+  "@defaultTheme": {
+    "description": ""
+  },
+  "language": "Langue",
+  "@language": {
+    "description": ""
+  },
+  "french": "Français",
+  "@french": {
+    "description": ""
+  },
+  "english": "Anglais",
+  "@english": {
+    "description": ""
+  },
+  "authMethod": "Code secret",
+  "@authMethod": {
+    "description": ""
+  },
+  "password": "Mot de passe",
+  "@password": {
+    "description": ""
+  },
+  "usePassword": "Utiliser un code secret à 5 chiffres",
+  "@usePassword": {
+    "description": ""
+  },
+  "clickToContinue": "Cliqué pour terminer",
+  "@clickToContinue": {
+    "description": ""
+  },
+  "usePasswordNotice": "Activer cette option si vous souhaitez verrouiller et déverrouiller votre application sans utilisé votre mot de passe..",
+  "@usePasswordNotice": {
+    "description": ""
+  },
+  "selectLanguage": "Langue favorite",
+  "@selectLanguage": {
+    "description": ""
+  },
+  "englishEnglang": "English, Royaume-Uni",
+  "@englishEnglang": {
+    "description": ""
+  },
+  "frenchFrance": "Français, France",
+  "@frenchFrance": {
+    "description": ""
+  },
+  "brightnessTheme": "Thème clair",
+  "@brightnessTheme": {
+    "description": ""
+  },
+  "darkTheme": "Thème sombre",
+  "@darkTheme": {
+    "description": ""
+  },
+  "darkThemeNotice": "Fond d'écran sombre et icônes claires",
+  "@darkThemeNotice": {
+    "description": ""
+  },
+  "lightThemeNotice": "Icônes sombres, fond d'écran clair",
+  "@lightThemeNotice": {
+    "description": ""
   }
 }

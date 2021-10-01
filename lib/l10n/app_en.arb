@@ -2,5 +2,85 @@
   "helloWorld": "Hello World!",
   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
+  },
+  "globalConfigMessage": "Set up your app",
+  "@globalConfigMessage": {
+    "description": ""
+  },
+  "globalConfigMessageNotice": "The applied configurations will be persistent but you can change them later.",
+  "@globalConfigMessageNotice": {
+    "description": ""
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": ""
+  },
+  "defaultTheme": "The default theme: brightness",
+  "@defaultTheme": {
+    "description": ""
+  },
+  "language": "Language",
+  "@language": {
+    "description": ""
+  },
+  "french": "French",
+  "@french": {
+    "description": ""
+  },
+  "english": "English",
+  "@english": {
+    "description": ""
+  },
+  "authMethod": "Secret code",
+  "@authMethod": {
+    "description": ""
+  },
+  "password": "Password",
+  "@password": {
+    "description": ""
+  },
+  "usePassword": "Use a 5-digits secret code",
+  "@usePassword": {
+    "description": ""
+  },
+  "clickToContinue": "Click to continue",
+  "@clickToContinue": {
+    "description": ""
+  },
+  "usePasswordNotice": "Enable this option if you want to lock and unlock your app without using your password.",
+  "@usePasswordNotice": {
+    "description": ""
+  },
+  "selectLanguage": "Favorite language",
+  "@selectLanguage": {
+    "description": ""
+  },
+  "englishEnglang": "English, United kingdom",
+  "@englishEnglang": {
+    "description": ""
+  },
+  "frenchFrance": "French, France",
+  "@frenchFrance": {
+    "description": ""
+  },
+  "secretCodeNotice": "",
+  "@secretCodeNotice": {
+    "description": ""
+  },
+  "brightnessTheme": "Light theme",
+  "@brightnessTheme": {
+    "description": ""
+  },
+  "darkTheme": "Dark theme",
+  "@darkTheme": {
+    "description": ""
+  },
+  "darkThemeNotice": "Light icons, dark background",
+  "@darkThemeNotice": {
+    "description": ""
+  },
+  "lightThemeNotice": "Dark icons, light background",
+  "@lightThemeNotice": {
+    "description": ""
   }
 }

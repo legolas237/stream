@@ -68,6 +68,9 @@ class OStreamAppTheme {
           opacity: 1,
         ),
       ),
+      radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.resolveWith((states) => palette.secondaryBrandColor(1)),
+      ),
       textTheme: const TextTheme().copyWith(
         subtitle1: TextStyle(
           fontSize: 16.0,
@@ -83,6 +86,11 @@ class OStreamAppTheme {
           fontSize: 18.0,
           fontWeight: FontWeight.w700,
           color: palette.textColor(1),
+        ),
+        headline2: TextStyle(
+          fontSize: 13.0,
+          fontWeight: FontWeight.w600,
+          color: palette.secondaryBrandColor(1),
         ),
         caption: TextStyle(
           fontSize: 13.0,

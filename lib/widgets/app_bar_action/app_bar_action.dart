@@ -41,4 +41,12 @@ class AppBarActionWidget extends StatelessWidget {
       ),
     );
   }
+
+  static Icon buildIcon({required IconData icon, required Color color, double size = 20.0,}) {
+    return Icon(
+      icon,
+      color: color,
+      size: size,
+    );
+  }
 }

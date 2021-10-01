@@ -62,8 +62,9 @@ class ScaffoldWidget extends StatelessWidget {
                   title!,
                   style: Theme.of(context).textTheme.subtitle1!.merge(
                     TextStyle(
-                      color: titleColor ?? palette.whiteColor(1),
+                      color: titleColor ?? palette.textColor(1),
                       fontWeight: FontWeight.w600,
+                      fontSize: 14.0,
                     ),
                   ),
                 )
