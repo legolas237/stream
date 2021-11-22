@@ -3,80 +3,201 @@
   "@helloWorld": {
     "description": "L’accueil du programmeur nouveau-né conventionnel"
   },
-  "globalConfigMessage": "Configurer votre application",
-  "@globalConfigMessage": {
+  "oopsError": "Oups Erreur!",
+  "@error": {
     "description": ""
   },
-  "globalConfigMessageNotice": "Les configurations appliquées seront  persistantes mais vous pourrez les modifier plus tard.",
-  "@globalConfigMessageNotice": {
+  "beginAndAccept": "Accepter & commencer",
+  "@beginAndAccept": {
     "description": ""
   },
-  "theme": "Thème",
-  "@theme": {
+  "clickToAccept": "Cliquer sur \"ACCEPTER & COMMENCER\" pour accepter les",
+  "@clickToAccept": {
     "description": ""
   },
-  "defaultTheme": "Le thème par défaut: brillance",
-  "@defaultTheme": {
+  "termAndCondition": " Conditions d'utilisations",
+  "@termAndCondition": {
     "description": ""
   },
-  "language": "Langue",
-  "@language": {
+  "enjoySeriesMovies": "Profitez des séries et des films",
+  "@enjoySeriesMovies": {
     "description": ""
   },
-  "french": "Français",
-  "@french": {
+  "enjoySeriesMoviesNotice": "Profiter des nouveautés, découvrer des acteurs, regarder vos séries et films préférés.",
+  "@enjoySeriesMoviesNotice": {
     "description": ""
   },
-  "english": "Anglais",
-  "@english": {
+  "subscription": "Souscripion",
+  "@subscription": {
     "description": ""
   },
-  "authMethod": "Code secret",
-  "@authMethod": {
+  "download": "Téléchargement",
+  "@download": {
     "description": ""
   },
-  "password": "Mot de passe",
-  "@password": {
+  "signIn": "Connexion",
+  "@signIn": {
     "description": ""
   },
-  "usePassword": "Utiliser un code secret à 5 chiffres",
-  "@usePassword": {
+  "clickToSignUp": "Cliquer sur \"S'INSCRIRE\" pour créer un compte",
+  "@clickToSignUp": {
     "description": ""
   },
-  "clickToContinue": "Cliqué pour terminer",
-  "@clickToContinue": {
+  "signup": "S'inscrire",
+  "@signup": {
     "description": ""
   },
-  "usePasswordNotice": "Activer cette option si vous souhaitez verrouiller et déverrouiller votre application sans utilisé votre mot de passe..",
-  "@usePasswordNotice": {
+  "or": "Ou",
+  "@or": {
     "description": ""
   },
-  "selectLanguage": "Langue favorite",
-  "@selectLanguage": {
+  "accessYourAccount": "Accéder à votre compte",
+  "@accessYourAccount": {
     "description": ""
   },
-  "englishEnglang": "English, Royaume-Uni",
-  "@englishEnglang": {
+  "fullEmail": "Adresse électronique",
+  "@fullEmail": {
     "description": ""
   },
-  "frenchFrance": "Français, France",
-  "@frenchFrance": {
+  "yourPassword": "Votre mot de passe",
+  "@yourPassword": {
     "description": ""
   },
-  "brightnessTheme": "Thème clair",
-  "@brightnessTheme": {
+  "loginWith": "Connectez-vous avec",
+  "@loginWith": {
     "description": ""
   },
-  "darkTheme": "Thème sombre",
-  "@darkTheme": {
+  "telephone": "Telephone",
+  "@telephone": {
     "description": ""
   },
-  "darkThemeNotice": "Fond d'écran sombre et icônes claires",
-  "@darkThemeNotice": {
+  "email": "E-mail",
+  "@email": {
     "description": ""
   },
-  "lightThemeNotice": "Icônes sombres, fond d'écran clair",
-  "@lightThemeNotice": {
+  "enterEmailPassword": "Entrez votre e-mail et votre mot de passe",
+  "@enterEmailPassword": {
+    "description": ""
+  },
+  "connection": "Connexion",
+  "@connection": {
+    "description": ""
+  },
+  "forgotPassword": "Mot de passe perdu?",
+  "@forgotPassword": {
+    "description": ""
+  },
+  "enterTelephone": "Entrez votre numéro de téléphone",
+  "@enterTelephone": {
+    "description": ""
+  },
+  "loginTelephoneNotice": "Assurez-vous que le numéro est valide. Un code sera envoyé par sms",
+  "@loginTelephoneNotice": {
+    "description": ""
+  },
+  "phoneNumber": "Numéro de téléphone",
+  "@phoneNumber": {
+    "description": ""
+  },
+  "sendCode": "Envoyer le code",
+  "@sendCode": {
+    "description": ""
+  },
+  "enterOtpCode": "Saisissez le code à {count} chiffres",
+  "@enterOtpCode": {
+    "description": "",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "codeSendTo": "Votre code de vérification a été envoyé au {telephone}",
+  "@codeSendTo": {
+    "description": "",
+    "placeholders": {
+      "telephone": {}
+    }
+  },
+  "verifyOtp": "Vérifier",
+  "@verifyOtp": {
+    "description": ""
+  },
+  "changePhoneNumber": "Changer le numéro",
+  "@changePhoneNumber": {
+    "description": ""
+  },
+  "code": "Code",
+  "@code": {
+    "description": ""
+  },
+  "resendCodeIn": "Renvoyer le code dans {duration}s",
+  "@resendCodeIn": {
+    "description": "",
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "clickToSignIn": "Cliquer sur \"CONNEXION\" pour accéder à votre compte",
+  "@clickToSignIn": {
+    "description": ""
+  },
+  "signupWith": "S'inscrire avec",
+  "@signupWith": {
+    "description": ""
+  },
+  "createAccount": "Créer votre compte",
+  "@createAccount": {
+    "description": ""
+  },
+  "userName": "Nom utilisateur",
+  "@userName": {
+    "description": ""
+  },
+  "userNameNotice": "C'est celui qui apparaitra dans vos commentaires et servira à vous identifier.",
+  "@userNameNotice": {
+    "description": ""
+  },
+  "defineStrongPassword": "Définir un mot de passe sécurisé: mélange des lettres minuscules, majuscules, des chiffres et caractères spéciaux.",
+  "@defineStrongPassword": {
+    "description": ""
+  },
+  "confirmPassword": "Confirmaer le mot de passe",
+  "@confirmPassword": {
+    "description": ""
+  },
+  "continueAction": "Continuer",
+  "@continueAction": {
+    "description": ""
+  },
+  "lastName": "Nom",
+  "@lastName": {
+    "description": ""
+  },
+  "firstName": "Prénom",
+  "@firstName": {
+    "description": ""
+  },
+  "legalReasons": "Pour des raisons légales vous devez indiquer votre date de naissance.",
+  "@legalReasons": {
+    "description": ""
+  },
+  "readMore": "En savoir plus",
+  "@readMore": {
+    "description": ""
+  },
+  "selectDate": "Sélectionner une date",
+  "@selectDate": {
+    "description": ""
+  },
+  "yourBirthday": "Date de naissance",
+  "@yourBirthday": {
+    "description": ""
+  },
+  "completeRegistration": "Terminer",
+  "@completeRegistration": {
+    "description": ""
+  },
+  "registration": "Incription",
+  "@registration": {
     "description": ""
   }
 }

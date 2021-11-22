@@ -12,16 +12,21 @@ class Palette {
   static const Color secondary = Color(0xFF039278);
   static const Color primary = Color(0xFF111B21);
   static const Color inputFill = Color(0xFFFAFAFA);
+  static const Color accentBrand = Color.fromRGBO(249, 79, 79, 1.0);
 
   final Color _primaryBrandColor = primary;
   final Color _secondaryBrandColor = secondary;
   final Color _captionColor = caption;
+  final Color _accentBrand = accentBrand;
 
+  final Color _primarySplashColor =  const Color(0xFF0A937A);
+  final Color _linkColor = const Color(0xFF3D81F3);
+  final Color _annotationRegionColor = const Color(0xFFFAFAFA);
   final Color _scaffoldColor = white;
   final Color _whiteColor = const Color(0xFFFFFFFF);
   final Color _iconColor = primary;
   final Color _textColor = primary;
-  final Color _secondarySplashColor = const Color(0xFF3D81F3);
+  final Color _secondarySplashColor = const Color(0xFF27A38D);
   final Color _secondaryHighLightColor = const Color(0xFF4586F3);
   final Color _bottomAppBarColor = white;
   final Color _borderColor = const Color(0xFFF1F1F1);
@@ -32,6 +37,27 @@ class Palette {
   final Color _disableButtonColor = const Color(0xFFFAFAFA);
   final Color _disableButtonBorderColor = const Color(0xFFF1F1F1);
   final Color _shadowColor = const Color(0xFFF5F4F4);
+  final Color _accentSplashColor = const Color.fromRGBO(253, 102, 102, 1.0);
+
+  Color accentSplashColor(double opacity) {
+    return _accentSplashColor.withOpacity(opacity);
+  }
+
+  Color accentBrandColor(double opacity) {
+    return _accentBrand.withOpacity(opacity);
+  }
+
+  Color primarySplashColor(double opacity) {
+    return _primarySplashColor.withOpacity(opacity);
+  }
+
+  Color linkColor(double opacity) {
+    return _linkColor.withOpacity(opacity);
+  }
+
+  Color annotationRegionColor(double opacity) {
+    return _annotationRegionColor.withOpacity(opacity);
+  }
 
   Color shadowColor(double opacity) {
     return _shadowColor.withOpacity(opacity);

@@ -26,9 +26,11 @@ class AppBarActionWidget extends StatelessWidget {
     palette = ThemeProvider.of(context)!.appTheme.palette;
 
     return Material(
-      shape: const CircleBorder(),
+      clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.circular(50.0),
       color: Colors.transparent,
       child: IconButton(
+        padding: const EdgeInsets.all(4.0),
         onPressed: () {
           if (onPressed != null) {
             onPressed!();

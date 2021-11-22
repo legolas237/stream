@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 
@@ -55,6 +56,11 @@ class StorageRepository {
 
     if(config != null && config.language != null){
       return config.language!.toLowerCase();
+    }
+
+    final deviceLocale = Get.deviceLocale;
+    if(deviceLocale != null) {
+      return deviceLocale.languageCode.toUpperCase().toString();
     }
 
     return Constants.defaultLanguage.toLowerCase();

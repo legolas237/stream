@@ -71,7 +71,12 @@ class OStreamAppTheme {
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith((states) => palette.secondaryBrandColor(1)),
       ),
-      textTheme: const TextTheme().copyWith(
+      inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
+        isDense: true,
+        filled: true,
+        fillColor: palette.inputFillColor(1.0),
+      ),
+      textTheme: Theme.of(context).textTheme.copyWith(
         subtitle1: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.w600,

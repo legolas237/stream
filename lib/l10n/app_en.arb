@@ -3,84 +3,201 @@
   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
   },
-  "globalConfigMessage": "Set up your app",
-  "@globalConfigMessage": {
+  "oopsError": "Oops Error!",
+  "@error": {
     "description": ""
   },
-  "globalConfigMessageNotice": "The applied configurations will be persistent but you can change them later.",
-  "@globalConfigMessageNotice": {
+  "beginAndAccept": "Accept and start",
+  "@beginAndAccept": {
     "description": ""
   },
-  "theme": "Theme",
-  "@theme": {
+  "clickToAccept": "Click on \"ACCEPT & START\" to accept the",
+  "@clickToAccept": {
     "description": ""
   },
-  "defaultTheme": "The default theme: brightness",
-  "@defaultTheme": {
+  "termAndCondition": " Terms of Use",
+  "@termAndCondition": {
     "description": ""
   },
-  "language": "Language",
-  "@language": {
+  "enjoySeriesMovies": "Enjoy series & movies",
+  "@enjoySeriesMovies": {
     "description": ""
   },
-  "french": "French",
-  "@french": {
+  "enjoySeriesMoviesNotice": "Enjoy the news, discover actors, watch your favorite series and movies.",
+  "@enjoySeriesMoviesNotice": {
     "description": ""
   },
-  "english": "English",
-  "@english": {
+  "subscription": "Subscription",
+  "@subscription": {
     "description": ""
   },
-  "authMethod": "Secret code",
-  "@authMethod": {
+  "download": "Download",
+  "@download": {
     "description": ""
   },
-  "password": "Password",
-  "@password": {
+  "signIn": "Sign In",
+  "@signIn": {
     "description": ""
   },
-  "usePassword": "Use a 5-digits secret code",
-  "@usePassword": {
+  "clickToSignUp": "Click on \"SIGN UP\" to create an account",
+  "@clickToSignUp": {
     "description": ""
   },
-  "clickToContinue": "Click to continue",
-  "@clickToContinue": {
+  "signup": "Sign Up",
+  "@signup": {
     "description": ""
   },
-  "usePasswordNotice": "Enable this option if you want to lock and unlock your app without using your password.",
-  "@usePasswordNotice": {
+  "or": "Or",
+  "@or": {
     "description": ""
   },
-  "selectLanguage": "Favorite language",
-  "@selectLanguage": {
+  "accessYourAccount": "Access your account",
+  "@accessYourAccount": {
     "description": ""
   },
-  "englishEnglang": "English, United kingdom",
-  "@englishEnglang": {
+  "fullEmail": "Email address",
+  "@fullEmail": {
     "description": ""
   },
-  "frenchFrance": "French, France",
-  "@frenchFrance": {
+  "yourPassword": "Your secure password",
+  "@yourPassword": {
     "description": ""
   },
-  "secretCodeNotice": "",
-  "@secretCodeNotice": {
+  "loginWith": "Log in with",
+  "@loginWith": {
     "description": ""
   },
-  "brightnessTheme": "Light theme",
-  "@brightnessTheme": {
+  "telephone": "Telephone",
+  "@telephone": {
     "description": ""
   },
-  "darkTheme": "Dark theme",
-  "@darkTheme": {
+  "email": "E-mail",
+  "@email": {
     "description": ""
   },
-  "darkThemeNotice": "Light icons, dark background",
-  "@darkThemeNotice": {
+  "enterEmailPassword": "Enter your email and password",
+  "@enterEmailPassword": {
     "description": ""
   },
-  "lightThemeNotice": "Dark icons, light background",
-  "@lightThemeNotice": {
+  "connection": "Log In",
+  "@connection": {
+    "description": ""
+  },
+  "forgotPassword": "Lost password?",
+  "@forgotPassword": {
+    "description": ""
+  },
+  "enterTelephone": "Enter your phone number",
+  "@enterTelephone": {
+    "description": ""
+  },
+  "loginTelephoneNotice": "Make sure the number is valid. A code will be sent by sms",
+  "@loginTelephoneNotice": {
+    "description": ""
+  },
+  "phoneNumber": "Phone number",
+  "@phoneNumber": {
+    "description": ""
+  },
+  "sendCode": "Send code",
+  "@sendCode": {
+    "description": ""
+  },
+  "enterOtpCode": "Enter {count} digits code",
+  "@enterOtpCode": {
+    "description": "",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "codeSendTo": "Your verification code has been sent to {telephone}",
+  "@codeSendTo": {
+    "description": "",
+    "placeholders": {
+      "telephone": {}
+    }
+  },
+  "verifyOtp": "Verify",
+  "@verifyOtp": {
+    "description": ""
+  },
+  "changePhoneNumber": "Change telephone",
+  "@changePhoneNumber": {
+    "description": ""
+  },
+  "code": "Code",
+  "@code": {
+    "description": ""
+  },
+  "resendCodeIn": "Resend code in {duration}s",
+  "@resendCodeIn": {
+    "description": "",
+    "placeholders": {
+      "duration": {}
+    }
+  },
+  "clickToSignIn": "Click on \"SIGN IN\" to access your account",
+  "@clickToSignIn": {
+    "description": ""
+  },
+  "signupWith": "Sign up with",
+  "@signupWith": {
+    "description": ""
+  },
+  "createAccount": "Create your account",
+  "@createAccount": {
+    "description": ""
+  },
+  "userName": "User name",
+  "@userName": {
+    "description": ""
+  },
+  "userNameNotice": "This is the one that will appear in your comments and will serve to identify you.",
+  "@userNameNotice": {
+    "description": ""
+  },
+  "defineStrongPassword": "Set a secure password: mix of lowercase letters, uppercase letters, numbers and special characters.",
+  "@defineStrongPassword": {
+    "description": ""
+  },
+  "confirmPassword": "Confirm password",
+  "@confirmPassword": {
+    "description": ""
+  },
+  "continueAction": "Continue",
+  "@continueAction": {
+    "description": ""
+  },
+  "lastName": "Last name",
+  "@lastName": {
+    "description": ""
+  },
+  "firstName": "First name",
+  "@firstName": {
+    "description": ""
+  },
+  "legalReasons": "For legal reasons you must indicate your date of birth.",
+  "@legalReasons": {
+    "description": ""
+  },
+  "readMore": "Learn more",
+  "@readMore": {
+    "description": ""
+  },
+  "selectDate": "Select a date",
+  "@selectDate": {
+    "description": ""
+  },
+  "yourBirthday": "Your date of birth",
+  "@yourBirthday": {
+    "description": ""
+  },
+  "completeRegistration": "Complete",
+  "@completeRegistration": {
+    "description": ""
+  },
+  "registration": "Registration",
+  "@registration": {
     "description": ""
   }
 }

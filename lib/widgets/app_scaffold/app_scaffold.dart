@@ -19,26 +19,34 @@ class ScaffoldWidget extends StatelessWidget {
     this.leading,
     this.backgroundColor,
     this.withAppBar = true,
-    this.appChild,
     this.titleColor,
     this.brightness = Brightness.dark,
+    this.tabs,
+    this.appBarBackgroundColor,
+    this.annotationRegion,
+    this.extendBodyBehindAppBar = false,
+    this.resizeToAvoidBottomInset = true,
   }) : super(key: key);
 
   late Palette palette;
 
   final Widget body;
-  final String? title;
+  final dynamic title;
   final Color? titleColor;
   final bool mainTitle;
   final bool withAppBar;
   final bool centerTitle;
   final List<Widget> actions;
   final Widget? leading;
-  final Widget? appChild;
   final bool automaticallyImplyLeading;
   final Widget? bottomNavigationBar;
+  final PreferredSizeWidget? tabs;
   final Color? backgroundColor;
+  final Color? appBarBackgroundColor;
+  final Color? annotationRegion;
   final Brightness brightness;
+  final bool extendBodyBehindAppBar;
+  final bool resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
@@ -48,32 +56,42 @@ class ScaffoldWidget extends StatelessWidget {
     var color = backgroundColor;
 
     return AnnotationRegionWidget(
-      color: color ?? palette.scaffoldColor(1),
+      color: annotationRegion ?? (color ?? palette.annotationRegionColor(1.0)),
       brightness: brightness,
       child: Scaffold(
         backgroundColor: color,
         appBar: withAppBar ? AppBar(
-          backgroundColor: color,
+          backgroundColor: appBarBackgroundColor ?? palette.secondaryBrandColor(1.0),
           automaticallyImplyLeading: automaticallyImplyLeading,
           centerTitle: centerTitle,
           leading: leading,
-          title: title != null
-              ? Text(
-                  title!,
-                  style: Theme.of(context).textTheme.subtitle1!.merge(
-                    TextStyle(
-                      color: titleColor ?? palette.textColor(1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
-                    ),
-                  ),
-                )
-              : appChild ?? Container(),
+          title: _buildTitle(context, title),
           actions: actions,
+          bottom: tabs,
         ) : null,
         body: body,
         bottomNavigationBar: bottomNavigationBar,
+        extendBodyBehindAppBar: extendBodyBehindAppBar,
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       ),
     );
+  }
+
+  Widget _buildTitle(BuildContext context, dynamic title) {
+    if(title is Widget) return title;
+
+    if(title is String) {
+      return Text(
+        title,
+        style: Theme.of(context).textTheme.subtitle1!.merge(
+          TextStyle(
+            color: titleColor ?? palette.whiteColor(1),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
+    }
+
+    return Container();
   }
 }

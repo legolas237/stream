@@ -13,7 +13,7 @@ class MaterialColorApp extends MaterialColor {
     return _singleton;
   }
 
-  MaterialColorApp._internal(int primary, Map<int, Color> swatch)
+  const MaterialColorApp._internal(int primary, Map<int, Color> swatch)
       : super(primary, swatch);
 
   static final int _primaryColor = Palette.primary.value;
