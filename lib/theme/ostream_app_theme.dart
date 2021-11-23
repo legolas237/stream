@@ -42,24 +42,24 @@ class OStreamAppTheme {
       indicatorColor: palette.secondaryBrandColor(1),
       hintColor: palette.captionColor(1),
       errorColor: Colors.redAccent,
-      iconTheme: const IconThemeData().copyWith(
+      iconTheme: Theme.of(context).iconTheme.copyWith(
         color: palette.iconColor(1),
         size: 16.0,
         opacity: 1,
       ),
-      primaryIconTheme: const IconThemeData().copyWith(
+      primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(
         color: palette.iconColor(1),
         size: 16.0,
         opacity: 1,
       ),
-      tooltipTheme: const TooltipThemeData().copyWith(
+      tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
         decoration: BoxDecoration(color: palette.whiteColor(1)),
       ),
-      bottomAppBarTheme: const BottomAppBarTheme().copyWith(
+      bottomAppBarTheme: Theme.of(context).bottomAppBarTheme.copyWith(
         color: palette.scaffoldColor(1),
         elevation: 0.0,
       ),
-      appBarTheme: const AppBarTheme().copyWith(
+      appBarTheme: Theme.of(context).appBarTheme.copyWith(
         color: palette.scaffoldColor(1),
         elevation: 0.0,
         actionsIconTheme: IconThemeData(
@@ -78,7 +78,7 @@ class OStreamAppTheme {
       ),
       textTheme: Theme.of(context).textTheme.copyWith(
         subtitle1: TextStyle(
-          fontSize: 16.0,
+          fontSize: 15.0,
           fontWeight: FontWeight.w600,
           color: palette.textColor(1),
         ),

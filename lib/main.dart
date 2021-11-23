@@ -16,7 +16,7 @@ void main() async {
   await Hooks.initServices();
 
   Bloc.observer = SimpleBlocObserver();
-  runApp(OStreamApp());
+  runApp(const OStreamApp());
 }
 
 class OStreamApp extends StatelessWidget {

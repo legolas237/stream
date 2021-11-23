@@ -1,3 +1,4 @@
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -8,6 +9,13 @@ class StorageService extends GetxService {
     await GetStorage.init();
     StorageRepository.init();
 
+    return this;
+  }
+}
+
+class PhoneNumberLibService extends GetxService {
+  Future<PhoneNumberLibService> init() async {
+    await FlutterLibphonenumber().init();
     return this;
   }
 }

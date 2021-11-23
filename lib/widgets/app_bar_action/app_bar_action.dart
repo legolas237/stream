@@ -30,16 +30,16 @@ class AppBarActionWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(50.0),
       color: Colors.transparent,
       child: IconButton(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(0.0),
         onPressed: () {
           if (onPressed != null) {
             onPressed!();
           }
         },
         icon: icon,
-        highlightColor: highLightColor ?? palette.highLightLightColor(1),
-        hoverColor: highLightColor ?? palette.highLightLightColor(1),
-        splashColor: splashColor ?? palette.splashLightColor(1),
+        highlightColor: highLightColor ?? palette.secondaryHighLightColor(1),
+        hoverColor: highLightColor ?? palette.secondaryHighLightColor(1),
+        splashColor: splashColor ?? palette.secondarySplashColor(1),
       ),
     );
   }

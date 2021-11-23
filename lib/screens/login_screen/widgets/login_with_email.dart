@@ -22,53 +22,52 @@ class LoginWithEmailWidget extends StatelessWidget {
     // Get theme palette
     palette = ThemeProvider.of(context)!.appTheme.palette;
 
-    return Center(
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.verticalPadding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: Constants.horizontalPadding,
-                right: MediaQuery.of(context).size.width * 0.1,
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.enterEmailPassword,
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.subtitle1!.merge(
-                  const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                  ),
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+        vertical: Constants.verticalPadding,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: Constants.horizontalPadding,
+              right: MediaQuery.of(context).size.width * 0.1,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.enterEmailPassword,
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.subtitle1!.merge(
+                const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
-            EmailInputWidget(),
-            DividerWidget(),
-            PasswordInputWidget(),
-            const SizedBox(height: 24.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Constants.horizontalPadding,
-              ),
-              child: Wrap(
-                children: [
-                  ButtonWidget(
-                    onPressed: () {},
+          ),
+          const SizedBox(height: 20.0),
+          EmailInputWidget(),
+          DividerWidget(),
+          PasswordInputWidget(),
+          const SizedBox(height: 24.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Constants.horizontalPadding,
+            ),
+            child: Wrap(
+              children: [
+                ButtonWidget(
+                  onPressed: () {},
+                  enabled: true,
+                  child: ButtonWidget.buttonTextChild(
+                    context: context,
                     enabled: true,
-                    child: ButtonWidget.buttonTextChild(
-                      context: context,
-                      enabled: true,
-                      text: AppLocalizations.of(context)!.connection,
-                    ),
+                    text: AppLocalizations.of(context)!.connection,
                   ),
-                  const SizedBox(width: 14.0),
-                  Padding(
+                ),
+                const SizedBox(width: 14.0),
+                Padding(
                     padding: const EdgeInsets.only(
                       top: 16.0,
                     ),
@@ -86,12 +85,11 @@ class LoginWithEmailWidget extends StatelessWidget {
                         ),
                       ),
                     )
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

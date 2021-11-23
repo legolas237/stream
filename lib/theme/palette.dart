@@ -19,7 +19,7 @@ class Palette {
   final Color _captionColor = caption;
   final Color _accentBrand = accentBrand;
 
-  final Color _primarySplashColor =  const Color(0xFF0A937A);
+  final Color _secondaryLightColor =  const Color(0xFF55D4BC);
   final Color _linkColor = const Color(0xFF3D81F3);
   final Color _annotationRegionColor = const Color(0xFFFAFAFA);
   final Color _scaffoldColor = white;
@@ -27,7 +27,7 @@ class Palette {
   final Color _iconColor = primary;
   final Color _textColor = primary;
   final Color _secondarySplashColor = const Color(0xFF27A38D);
-  final Color _secondaryHighLightColor = const Color(0xFF4586F3);
+  final Color _secondaryHighLightColor = const Color(0xFF3BB49E);
   final Color _bottomAppBarColor = white;
   final Color _borderColor = const Color(0xFFF1F1F1);
   final Color _splashLightColor = const Color(0xFFEAEAEA);
@@ -39,16 +39,16 @@ class Palette {
   final Color _shadowColor = const Color(0xFFF5F4F4);
   final Color _accentSplashColor = const Color.fromRGBO(253, 102, 102, 1.0);
 
+  Color secondaryLightColor(double opacity) {
+    return _secondaryLightColor.withOpacity(opacity);
+  }
+
   Color accentSplashColor(double opacity) {
     return _accentSplashColor.withOpacity(opacity);
   }
 
   Color accentBrandColor(double opacity) {
     return _accentBrand.withOpacity(opacity);
-  }
-
-  Color primarySplashColor(double opacity) {
-    return _primarySplashColor.withOpacity(opacity);
   }
 
   Color linkColor(double opacity) {

@@ -13,7 +13,7 @@ class Constants {
   static const List<String> supportedLanguages = ['EN', 'FR'];
   static const defaultCurrency = 'XAF';
   static const datePickersFormat = 'EEE, d MMM yyyy';
-  static const defaultCountry = Country(dialCode: '+237', isoCode: 'CM');
+  static const defaultCountry = Country(dialCode: '+237', alphaCode: 'CM');
   static Map mapDateTimeLocale =     {
     supportedLanguages[0].toLowerCase() : LocaleType.en,
     supportedLanguages[1].toLowerCase() : LocaleType.fr,

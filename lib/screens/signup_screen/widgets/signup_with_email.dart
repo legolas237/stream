@@ -33,80 +33,78 @@ class SignUpWthEmailWidget extends StatelessWidget {
           return BasicInformationWidget();
         }
 
-        return Center(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(
-              vertical: Constants.verticalPadding,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: Constants.horizontalPadding,
-                    right: MediaQuery.of(context).size.width * 0.1,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.createAccount,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.subtitle1!.merge(
-                      const TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+        return SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(
+            vertical: Constants.verticalPadding,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: Constants.horizontalPadding,
+                  right: MediaQuery.of(context).size.width * 0.1,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.createAccount,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.subtitle1!.merge(
+                    const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                EmailInputWidget(),
-                DividerWidget(),
-                UserNameInputWidget(),
-                DividerWidget(),
-                const SizedBox(height: 20.0),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: Constants.horizontalPadding,
-                    right: MediaQuery.of(context).size.width * 0.1,
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.defineStrongPassword,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.subtitle1!.merge(
-                      const TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+              ),
+              const SizedBox(height: 20.0),
+              EmailInputWidget(),
+              DividerWidget(),
+              UserNameInputWidget(),
+              DividerWidget(),
+              const SizedBox(height: 20.0),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: Constants.horizontalPadding,
+                  right: MediaQuery.of(context).size.width * 0.1,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.defineStrongPassword,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.subtitle1!.merge(
+                    const TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                PasswordInputWidget(),
-                DividerWidget(),
-                PasswordInputWidget(
-                  hintText: AppLocalizations.of(context)!.confirmPassword,
+              ),
+              const SizedBox(height: 20.0),
+              PasswordInputWidget(),
+              DividerWidget(),
+              PasswordInputWidget(
+                hintText: AppLocalizations.of(context)!.confirmPassword,
+              ),
+              const SizedBox(height: 24.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Constants.horizontalPadding,
                 ),
-                const SizedBox(height: 24.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: Constants.horizontalPadding,
-                  ),
-                  child: ButtonWidget(
-                    onPressed: () {
-                      BlocProvider.of<SignUpBloc>(context).add(
-                        SignUp(),
-                      );
-                    },
+                child: ButtonWidget(
+                  onPressed: () {
+                    BlocProvider.of<SignUpBloc>(context).add(
+                      SignUp(),
+                    );
+                  },
+                  enabled: true,
+                  child: ButtonWidget.buttonTextChild(
+                    context: context,
                     enabled: true,
-                    child: ButtonWidget.buttonTextChild(
-                      context: context,
-                      enabled: true,
-                      text: AppLocalizations.of(context)!.continueAction,
-                    ),
+                    text: AppLocalizations.of(context)!.continueAction,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }
@@ -129,95 +127,93 @@ class BasicInformationWidget extends StatelessWidget {
     // Get theme palette
     palette = ThemeProvider.of(context)!.appTheme.palette;
 
-    return Center(
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(
-          vertical: Constants.verticalPadding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: Constants.horizontalPadding,
-                right: MediaQuery.of(context).size.width * 0.1,
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+        vertical: Constants.verticalPadding,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: Constants.horizontalPadding,
+              right: MediaQuery.of(context).size.width * 0.1,
+            ),
+            child: Text(
+              AppLocalizations.of(context)!.createAccount,
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.subtitle1!.merge(
+                const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              child: Text(
-                AppLocalizations.of(context)!.createAccount,
-                textAlign: TextAlign.left,
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          ControlledInputWidget(
+            keyboardType: TextInputType.text,
+            hintText: AppLocalizations.of(context)!.lastName,
+          ),
+          DividerWidget(),
+          ControlledInputWidget(
+            keyboardType: TextInputType.text,
+            hintText: AppLocalizations.of(context)!.firstName,
+          ),
+          DividerWidget(),
+          const SizedBox(height: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Constants.horizontalPadding,
+            ),
+            child: RichText(
+              textAlign: TextAlign.start,
+              text: TextSpan(
                 style: Theme.of(context).textTheme.subtitle1!.merge(
                   const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            ControlledInputWidget(
-              keyboardType: TextInputType.text,
-              hintText: AppLocalizations.of(context)!.lastName,
-            ),
-            DividerWidget(),
-            ControlledInputWidget(
-              keyboardType: TextInputType.text,
-              hintText: AppLocalizations.of(context)!.firstName,
-            ),
-            DividerWidget(),
-            const SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Constants.horizontalPadding,
-              ),
-              child: RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.subtitle1!.merge(
-                    const TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w400,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: AppLocalizations.of(context)!.legalReasons,
+                  ),
+                  TextSpan(
+                    text: ' ${AppLocalizations.of(context)!.readMore}',
+                    style: TextStyle(
+                      color: palette.linkColor(1.0),
                     ),
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: AppLocalizations.of(context)!.legalReasons,
-                    ),
-                    TextSpan(
-                      text: ' ${AppLocalizations.of(context)!.readMore}',
-                      style: TextStyle(
-                        color: palette.linkColor(1.0),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
-            DateInputWidget(
-              hintText: AppLocalizations.of(context)!.yourBirthday,
+          ),
+          DateInputWidget(
+            hintText: AppLocalizations.of(context)!.yourBirthday,
+          ),
+          DividerWidget(),
+          const SizedBox(height: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Constants.horizontalPadding,
             ),
-            DividerWidget(),
-            const SizedBox(height: 20.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Constants.horizontalPadding,
-              ),
-              child: ButtonWidget(
-                onPressed: () {
-                  BlocProvider.of<SignUpBloc>(context).add(
-                    SignUp(),
-                  );
-                },
+            child: ButtonWidget(
+              onPressed: () {
+                BlocProvider.of<SignUpBloc>(context).add(
+                  SignUp(),
+                );
+              },
+              enabled: true,
+              child: ButtonWidget.buttonTextChild(
+                context: context,
                 enabled: true,
-                child: ButtonWidget.buttonTextChild(
-                  context: context,
-                  enabled: true,
-                  text: AppLocalizations.of(context)!.registration,
-                ),
+                text: AppLocalizations.of(context)!.registration,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -30,7 +30,7 @@ class AuthScaffoldWidget extends StatelessWidget {
 
     return ScaffoldWidget(
       backgroundColor: palette.scaffoldColor(1.0),
-      appBarBackgroundColor: palette.scaffoldColor(1.0),
+      appBarBackgroundColor: palette.secondaryBrandColor(1.0),
       annotationRegion: palette.annotationRegionColor(1.0),
       automaticallyImplyLeading: false,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,

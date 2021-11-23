@@ -7,6 +7,8 @@ import 'package:stream/config/hooks.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
+import 'package:stream/widgets/button/button.dart';
+import 'package:stream/widgets/divider/divider.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
 
 // ignore: must_be_immutable
@@ -36,19 +38,28 @@ class DateInputWidget extends StatefulWidget {
 
 class _DateInputWidgetState extends State<DateInputWidget> {
   late DateTime? value;
+  late DateTime? tempValue;
   late DatePickerController controller;
 
   @override
   void initState() {
     super.initState();
 
+    tempValue = _initialValue();
     value = widget.value;
     controller = DatePickerController(
-      initialDateTime: DateTime.now(),
+      initialDateTime: _initialValue(),
       minYear: widget.minYear ?? 2011,
       maxYear: widget.maxYear ?? 2050,
     );
   }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +158,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
       context: context,
       builder: (context) {
         return Container(
+          padding: const EdgeInsets.all(0.0),
           decoration: BoxDecoration(
             color: widget.palette.scaffoldColor(1.0),
           ),
@@ -169,14 +181,71 @@ class _DateInputWidgetState extends State<DateInputWidget> {
                   ),
                 ),
               ),
-              const SizedBox(height: 14.0),
-              DatePicker(
+              const SizedBox(height: 6.0),
+              ScrollDatePicker(
                 controller: controller,
-                onSelect: (date) {
-                  setState(() {
-                    value = date;
-                  });
+                height: 200.0,
+                locale: DatePickerLocale.en_us,
+                pickerDecoration: BoxDecoration(
+                  color: widget.palette.secondaryBrandColor(0.1),
+                  border: Border.all(
+                    color: widget.palette.secondaryBrandColor(0.2),
+                    width: 0.4,
+                  ),
+                ),
+                config: DatePickerConfig(
+                  isLoop: false,
+                  itemExtent: 38.0,
+                  diameterRatio: 7.0,
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: widget.palette.captionColor(1.0),
+                    fontSize: 14.0,
+                  ),
+                  selectedTextStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: widget.palette.secondaryBrandColor(1.0),
+                    fontSize: 16.0,
+                  ),
+                ),
+                onChanged: (value) {
+                  tempValue = value;
                 },
+              ),
+              const SizedBox(height: 6.0),
+              DividerWidget(),
+              SizedBox(
+                height: 44.0,
+                width: MediaQuery.of(context).size.width,
+                child: ButtonWidget(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _selectDate();
+                  },
+                  enabled: true,
+                  child: ButtonWidget.buttonTextChild(
+                    context: context,
+                    enabled: true,
+                    text: "OK",
+                    textStyle: TextStyle(
+                      color: widget.palette.secondaryBrandColor(1),
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ButtonStyleWrapper(
+                    palette: widget.palette,
+                    enabled: true,
+                  ).build(context).copyWith(
+                    backgroundColor: MaterialStateColor.resolveWith((states) {
+                      return Colors.transparent;
+                    },
+                    ),
+                    overlayColor: MaterialStateColor.resolveWith((states) {
+                      return widget.palette.secondaryBrandColor(0.1);
+                    }),
+                  ),
+                ),
               ),
             ],
           ),
@@ -184,55 +253,21 @@ class _DateInputWidgetState extends State<DateInputWidget> {
       },
     );
   }
-}
 
-// Internals classes
+  // Callback
 
-// ignore: must_be_immutable
-class DatePicker extends StatelessWidget {
-  DatePicker({
-    Key? key,
-    required this.controller,
-    this.onSelect,
-  }) : super(key: key);
+  DateTime _initialValue() {
+    return widget.value ?? DateTime.now();
+  }
 
-  late Palette palette;
-  final Function(DateTime)? onSelect;
-  final DatePickerController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    palette = ThemeProvider.of(context)!.appTheme.palette;
-
-    return ScrollDatePicker(
-      controller: controller,
-      height: 220.0,
-      locale: DatePickerLocale.en_us,
-      pickerDecoration: BoxDecoration(
-        color: palette.secondaryBrandColor(0.1),
-        border: Border.all(
-          color: palette.secondaryBrandColor(0.2),
-          width: 0.4,
-        ),
-      ),
-      config: DatePickerConfig(
-        isLoop: false,
-        itemExtent: 38.0,
-        diameterRatio: 7.0,
-        textStyle: TextStyle(
-          fontWeight: FontWeight.w400,
-          color: palette.captionColor(1.0),
-          fontSize: 14.0,
-        ),
-        selectedTextStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          color: palette.secondaryBrandColor(1.0),
-          fontSize: 16.0,
-        ),
-      ),
-      onChanged: (value) {
-        if(onSelect != null) onSelect!(value);
-      },
-    );
+  void _selectDate() {
+    setState(() {
+      value = tempValue;
+      controller = DatePickerController(
+        initialDateTime: tempValue!,
+        minYear: widget.minYear ?? 2011,
+        maxYear: widget.maxYear ?? 2050,
+      );
+    });
   }
 }

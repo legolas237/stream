@@ -14,6 +14,7 @@ import 'package:stream/screens/login_screen/widgets/login_with_telephone.dart';
 import 'package:stream/screens/signup_screen/signup_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
+import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
 import 'package:stream/widgets/button/button.dart';
 
 // ignore: must_be_immutable
@@ -172,18 +173,13 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const SizedBox(width: 4.0),
           Expanded(
-            child: Text(
+            child: ScaffoldWidget.buildTitle(
+              context,
+              widget.palette,
               AppLocalizations.of(context)!.loginWith,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.subtitle1!.merge(
-                const TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
             ),
           ),
+          const SizedBox(width: 6.0),
           AuthTabWidget(
             items: [
               AuthTabItemWidget(

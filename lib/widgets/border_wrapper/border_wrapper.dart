@@ -29,7 +29,7 @@ class BorderlessWrapperWidget extends StatelessWidget {
 
     var noneBorder = const BorderSide(
       color: Colors.transparent,
-      width: 1.0,
+      width: 0.0,
     );
 
     return Container(

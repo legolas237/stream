@@ -199,5 +199,17 @@
   "registration": "Registration",
   "@registration": {
     "description": ""
+  },
+  "countries": "Countries",
+  "@countries": {
+    "description": ""
+  },
+  "selectCountry": "Select a country",
+  "@selectCountry": {
+    "description": ""
+  },
+  "typeToSearch": "Type to search",
+  "@typeToSearch": {
+    "description": ""
   }
 }

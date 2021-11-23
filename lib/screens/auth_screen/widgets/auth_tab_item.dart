@@ -26,28 +26,40 @@ class AuthTabItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onSelect,
       child: Container(
-        margin: const EdgeInsets.only(left: 14.0),
+        margin: const EdgeInsets.only(left: 16.0),
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              width: 2.0,
-              color: isSelected ? palette.secondaryBrandColor(1.0) : Colors.transparent,
-            ),
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   border: Border(
+        //     bottom: BorderSide(
+        //       width: 2.0,
+        //       color: isSelected ? palette.whiteColor(1.0) : Colors.transparent,
+        //     ),
+        //   ),
+        // ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 8.0),
             Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle1!.merge(
                 TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected ? palette.secondaryBrandColor(1.0) : palette.captionColor(1.0)
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected ? palette.whiteColor(1.0) : palette.whiteColor(0.5)
                 ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Container(
+              height: 4.0,
+              width: 4.0,
+              decoration: BoxDecoration(
+                color: isSelected ? palette.whiteColor(1.0) : Colors.transparent,
+                shape: BoxShape.circle,
               ),
             ),
           ],

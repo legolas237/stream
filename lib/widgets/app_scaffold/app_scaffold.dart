@@ -65,7 +65,7 @@ class ScaffoldWidget extends StatelessWidget {
           automaticallyImplyLeading: automaticallyImplyLeading,
           centerTitle: centerTitle,
           leading: leading,
-          title: _buildTitle(context, title),
+          title: _buildAppTitle(context, title),
           actions: actions,
           bottom: tabs,
         ) : null,
@@ -77,19 +77,23 @@ class ScaffoldWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(BuildContext context, dynamic title) {
+  static Widget buildTitle(BuildContext context, Palette palette, String title, [Color? titleColor]) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.subtitle1!.merge(
+        TextStyle(
+          color: titleColor ?? palette.whiteColor(1),
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppTitle(BuildContext context, dynamic title) {
     if(title is Widget) return title;
 
     if(title is String) {
-      return Text(
-        title,
-        style: Theme.of(context).textTheme.subtitle1!.merge(
-          TextStyle(
-            color: titleColor ?? palette.whiteColor(1),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      );
+      return buildTitle(context, palette, title);
     }
 
     return Container();

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -39,9 +40,10 @@ class Hooks {
   }
 
   static Future<void> initServices() async {
-    print('Starting Snack Resto services....');
+    debugPrint('Starting O\'Stream services....');
     await Get.putAsync(() => StorageService().init());
-    print('All Snack Resto services started...');
+    await Get.putAsync(() => PhoneNumberLibService().init());
+    debugPrint('All O\'Stream services started...');
   }
 
   static String formatDate(DateTime date, String format) {
@@ -63,4 +65,21 @@ class Hooks {
       useSymbolPadding: true,
     );
   }
+
+  static void prettyJson(Object? json) {
+    if(json != null){
+      JsonEncoder encoder = const JsonEncoder.withIndent(' ');
+      String prettyPrint = encoder.convert(json);
+
+      debugPrint(prettyPrint);
+    }
+
+    debugPrint('');
+  }
+
+  static String decodeJson(Object json) {
+    JsonEncoder encoder = const JsonEncoder();
+    return encoder.convert(json);
+  }
+
 }

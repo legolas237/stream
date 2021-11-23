@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
 import 'package:stream/config/config.dart';
 import 'package:stream/models/remote/country.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_input.dart';
+import 'package:stream/screens/country_screen/country_screen_bloc_provider.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
@@ -31,8 +33,8 @@ class TelephoneInputWidget extends StatefulWidget {
 
   late Palette palette;
 
-  final TextEditingController? controller;
   final Country country;
+  final TextEditingController? controller;
   final ValueChanged<PhoneNumber>? onChanged;
 
   @override
@@ -81,14 +83,20 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    inputFormatters: [],
+                    inputFormatters: [
+                      LibPhonenumberTextFormatter(
+                        overrideSkipCountryCode: country.alphaCode.toUpperCase(),
+                        phoneNumberType: PhoneNumberType.mobile,
+                        phoneNumberFormat: PhoneNumberFormat.national,
+                      ),
+                    ],
                     contentPadding: const EdgeInsets.only(
                       left: 20.0,
                       top: 18.0,
                       bottom: 18.0,
                     ),
                     onChanged: (value) {
-                      // parsePhoneNumber();
+                      _parsePhoneNumber();
                     },
                   ),
                 )
@@ -111,10 +119,13 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
 
   Widget _buildPrefix() {
     return GestureDetector(
+      onTap: () {
+        _navigateToGetCountry();
+      },
       child: Row(
         children: [
           Image.asset(
-            'icons/flags/png/${country.isoCode.toLowerCase()}.png',
+            'icons/flags/png/${country.alphaCode.toLowerCase()}.png',
             package: "country_icons",
             width: 22.0,
             height: 22.0,
@@ -153,23 +164,40 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
 
    // Callback
 
-  // void parsePhoneNumber() async {
-  //   phoneNumber.country = country;
-  //
-  //   try {
-  //     final Map<String, dynamic> parsedPhoneNumber = await FlutterLibphonenumber().parse(
-  //       '${country.dialCode} ${controller.text}',
-  //       region: country.isoCode.toUpperCase(),
-  //     );
-  //
-  //     phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
-  //     phoneNumber.isValid = true;
-  //   } catch (error) {
-  //     print(error);
-  //     phoneNumber.phoneNumber = "";
-  //     phoneNumber.isValid = false;
-  //   }
-  //
-  //   if(widget.onChanged != null) widget.onChanged!(phoneNumber);
-  // }
+  void _navigateToGetCountry() async {
+    final Country? selectCountry = await Navigator.push<Country>(
+        context,
+        MaterialPageRoute(
+            builder: (context) {
+              return CountryScreenBlocProvider(country: country);
+            },
+        ),
+    );
+
+    if(selectCountry != null) {
+      setState(() {
+        country = selectCountry;
+      });
+    }
+  }
+
+  void _parsePhoneNumber() async {
+    phoneNumber.country = country;
+
+    try {
+      final Map<String, dynamic> parsedPhoneNumber = await FlutterLibphonenumber().parse(
+        '${country.dialCode} ${controller.text}',
+        region: country.alphaCode.toUpperCase(),
+      );
+
+      phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
+      phoneNumber.isValid = true;
+    } catch (error) {
+      print(error);
+      phoneNumber.phoneNumber = "";
+      phoneNumber.isValid = false;
+    }
+
+    if(widget.onChanged != null) widget.onChanged!(phoneNumber);
+  }
 }
