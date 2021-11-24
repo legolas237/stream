@@ -119,6 +119,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     GFIconButton(
                       onPressed: () {},
                       size: GFSize.MEDIUM,
+                      color:  const Color(0xFF3D81F3),
+                      splashColor: const Color(0xFF6DA1F8),
+                      highlightColor: const Color(0xFF6DA1F8).withOpacity(0.6),
+                      hoverColor: const Color(0xFF6DA1F8).withOpacity(0.6),
                       padding: const EdgeInsets.all(2),
                       icon: const FaIcon(FontAwesomeIcons.facebookF, size: 15.0,),
                     ),

@@ -41,7 +41,6 @@ class _SignupScreenState extends State<SignupScreen> {
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
     return AuthScaffoldWidget(
-      resizeToAvoidBottomInset: false,
       contentBottom: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

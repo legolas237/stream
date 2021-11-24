@@ -4,7 +4,6 @@ import 'package:stream/config/config.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
-import 'package:stream/widgets/border_wrapper/border_wrapper.dart';
 
 // ignore: must_be_immutable
 class AuthScaffoldWidget extends StatelessWidget {

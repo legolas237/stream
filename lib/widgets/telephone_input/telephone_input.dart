@@ -4,7 +4,7 @@ import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
 import 'package:stream/config/config.dart';
 import 'package:stream/models/remote/country.dart';
-import 'package:stream/screens/auth_screen/widgets/auth_input.dart';
+import 'package:stream/widgets/auth_input/auth_input.dart';
 import 'package:stream/screens/country_screen/country_screen_bloc_provider.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
@@ -29,11 +29,13 @@ class TelephoneInputWidget extends StatefulWidget {
     this.onChanged,
     this.controller,
     required this.country,
+    this.allowValidation = false,
   }) : super(key: key);
 
   late Palette palette;
 
   final Country country;
+  final bool allowValidation;
   final TextEditingController? controller;
   final ValueChanged<PhoneNumber>? onChanged;
 
@@ -50,17 +52,21 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
   void initState() {
     super.initState();
 
+    phoneNumber = PhoneNumber(phoneNumber: "", isValid: false);
     country = widget.country;
-    controller = TextEditingController(text: "");
+    controller = widget.controller ?? TextEditingController(text: "");
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     // Get theme palette
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
-
-    // Values
-    phoneNumber = PhoneNumber(phoneNumber: "", isValid: false);
 
     return Row(
       children: [
@@ -146,20 +152,15 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
   }
 
   Widget _buildSuffix() {
-    return Icon(
-      Icons.check_circle,
-      size: 15.0,
-      color: widget.palette.secondaryBrandColor(1.0),
-    );
+    if(phoneNumber.isValid) {
+      return Icon(
+        Icons.check_circle,
+        size: 15.0,
+        color: widget.palette.secondaryBrandColor(1.0),
+      );
+    }
 
-    return SizedBox(
-        height: 15.0,
-        width: 15.0,
-        child: SpinnerWidget(
-          colors: AlwaysStoppedAnimation<Color>(widget.palette.secondaryBrandColor(1.0),),
-          strokeWidth: 1.6,
-        )
-    );
+    return const SizedBox();
    }
 
    // Callback
@@ -190,12 +191,25 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
         region: country.alphaCode.toUpperCase(),
       );
 
-      phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
-      phoneNumber.isValid = true;
+      if(widget.allowValidation) {
+        setState(() {
+          phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
+          phoneNumber.isValid = true;
+        });
+      } else{
+        phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
+        phoneNumber.isValid = true;
+      }
     } catch (error) {
-      print(error);
-      phoneNumber.phoneNumber = "";
-      phoneNumber.isValid = false;
+      if(widget.allowValidation) {
+        setState(() {
+          phoneNumber.phoneNumber = "";
+          phoneNumber.isValid = false;
+        });
+      } else{
+        phoneNumber.phoneNumber = "";
+        phoneNumber.isValid = false;
+      }
     }
 
     if(widget.onChanged != null) widget.onChanged!(phoneNumber);

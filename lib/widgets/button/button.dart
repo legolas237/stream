@@ -80,6 +80,12 @@ class ButtonStyleWrapper {
     MaterialStateProperty<Color?>? overlayColor,
   }) {
     return const ButtonStyle().copyWith(
+      padding: MaterialStateProperty.resolveWith((states) {
+          return const EdgeInsets.only(
+            left: 12.0,
+            right: 11.0,
+          );
+      }),
       overlayColor: MaterialStateColor.resolveWith((states) {
         return palette.secondarySplashColor(1.0);
       }),
@@ -92,7 +98,7 @@ class ButtonStyleWrapper {
       ),
       shape: MaterialStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(2.0)),
           side: BorderSide(
             color: enabled
                 ? Colors.transparent

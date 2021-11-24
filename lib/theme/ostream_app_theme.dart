@@ -19,7 +19,7 @@ class OStreamAppTheme {
       brightness: Brightness.dark,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       primarySwatch: MaterialColorApp(),
-      primaryColor: palette.primaryBrandColor(1),
+      primaryColor: palette.secondaryBrandColor(1),
       primaryColorBrightness: Brightness.light,
       colorScheme: Theme.of(context).colorScheme.copyWith(
         secondary: palette.secondaryBrandColor(1),

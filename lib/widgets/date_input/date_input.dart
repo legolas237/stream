@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 
+import 'package:stream/blocs/localization/localization_cubit.dart';
 import 'package:stream/config/config.dart';
 import 'package:stream/config/hooks.dart';
 import 'package:stream/theme/palette.dart';
@@ -9,7 +11,6 @@ import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
 import 'package:stream/widgets/button/button.dart';
 import 'package:stream/widgets/divider/divider.dart';
-import 'package:stream/widgets/spinner/spinner.dart';
 
 // ignore: must_be_immutable
 class DateInputWidget extends StatefulWidget {
@@ -21,6 +22,7 @@ class DateInputWidget extends StatefulWidget {
     this.minYear,
     this.maxYear,
     this.format = Constants.datePickersFormat,
+    this.validateCallback,
   }) : super(key: key);
 
   late Palette palette;
@@ -30,7 +32,8 @@ class DateInputWidget extends StatefulWidget {
   final int? maxYear;
   final String? hintText;
   final String? format;
-  final Function(String)? onChanged;
+  final bool Function(DateTime?)? validateCallback;
+  final Function(DateTime?)? onChanged;
 
   @override
   State<StatefulWidget> createState() => _DateInputWidgetState();
@@ -39,6 +42,7 @@ class DateInputWidget extends StatefulWidget {
 class _DateInputWidgetState extends State<DateInputWidget> {
   late DateTime? value;
   late DateTime? tempValue;
+  late bool isValid;
   late DatePickerController controller;
 
   @override
@@ -47,6 +51,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
 
     tempValue = _initialValue();
     value = widget.value;
+    isValid = widget.validateCallback != null ? widget.validateCallback!(value) : false;
     controller = DatePickerController(
       initialDateTime: _initialValue(),
       minYear: widget.minYear ?? 2011,
@@ -59,7 +64,6 @@ class _DateInputWidgetState extends State<DateInputWidget> {
     controller.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,25 +136,30 @@ class _DateInputWidgetState extends State<DateInputWidget> {
   // Render
 
    Widget _buildSuffix() {
-    return Icon(
-      Icons.check_circle,
-      size: 15.0,
-      color: widget.palette.secondaryBrandColor(1.0),
-    );
+     if(widget.validateCallback != null && isValid) {
+       return Icon(
+         Icons.check_circle,
+         size: 15.0,
+         color: widget.palette.secondaryBrandColor(1.0),
+       );
+     }
 
-    return SizedBox(
-        height: 15.0,
-        width: 15.0,
-        child: SpinnerWidget(
-          colors: AlwaysStoppedAnimation<Color>(widget.palette.secondaryBrandColor(1.0),),
-          strokeWidth: 1.6,
-        )
-    );
+     if(widget.validateCallback != null) {
+       return Icon(
+         Icons.check_circle,
+         size: 15.0,
+         color: widget.palette.captionColor(0.2),
+       );
+     }
+
+     return const SizedBox();
    }
 
    // Bottom sheet
 
   void _showPicker() {
+    var localizationCubit = BlocProvider.of<LocalizationCubit>(context,);
+
     showModalBottomSheet(
       isDismissible: true,
       enableDrag: true,
@@ -185,7 +194,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
               ScrollDatePicker(
                 controller: controller,
                 height: 200.0,
-                locale: DatePickerLocale.en_us,
+                locale: Constants.mapDateTimeLocale[localizationCubit.state.language.toLowerCase()],
                 pickerDecoration: BoxDecoration(
                   color: widget.palette.secondaryBrandColor(0.1),
                   border: Border.all(
@@ -261,6 +270,8 @@ class _DateInputWidgetState extends State<DateInputWidget> {
   }
 
   void _selectDate() {
+    if(widget.onChanged != null) widget.onChanged!(tempValue);
+
     setState(() {
       value = tempValue;
       controller = DatePickerController(
@@ -268,6 +279,10 @@ class _DateInputWidgetState extends State<DateInputWidget> {
         minYear: widget.minYear ?? 2011,
         maxYear: widget.maxYear ?? 2050,
       );
+
+      if(widget.validateCallback != null) {
+        isValid = widget.validateCallback!(value);
+      }
     });
   }
 }

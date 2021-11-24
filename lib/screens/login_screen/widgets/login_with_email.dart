@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:stream/config/config.dart';
-import 'package:stream/screens/auth_screen/widgets/email_input.dart';
-import 'package:stream/screens/auth_screen/widgets/password_input.dart';
+import 'package:stream/widgets/password_input/password_input.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/button/button.dart';
 import 'package:stream/widgets/divider/divider.dart';
+import 'package:stream/widgets/email_input/email_input_bloc_provider.dart';
 
 // ignore: must_be_immutable
 class LoginWithEmailWidget extends StatelessWidget {
@@ -47,7 +47,7 @@ class LoginWithEmailWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20.0),
-          EmailInputWidget(),
+          EmailInputWidgetBlocProvider(),
           DividerWidget(),
           PasswordInputWidget(),
           const SizedBox(height: 24.0),

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
@@ -18,7 +19,7 @@ class SimpleBlocObserver extends BlocObserver {
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    print(transition);
+    debugPrint(transition.toString());
     super.onTransition(bloc, transition);
   }
 }

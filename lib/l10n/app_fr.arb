@@ -63,7 +63,7 @@
   "@yourPassword": {
     "description": ""
   },
-  "loginWith": "Connexion avec",
+  "loginWith": "Se conn. avec",
   "@loginWith": {
     "description": ""
   },
@@ -75,7 +75,7 @@
   "@email": {
     "description": ""
   },
-  "enterEmailPassword": "Entrez votre e-mail et votre mot de passe",
+  "enterEmailPassword": "Saisissez votre e-mail et votre mot de passe",
   "@enterEmailPassword": {
     "description": ""
   },
@@ -87,7 +87,7 @@
   "@forgotPassword": {
     "description": ""
   },
-  "enterTelephone": "Entrez votre numéro de téléphone",
+  "enterTelephone": "Saisissez votre numéro de téléphone",
   "@enterTelephone": {
     "description": ""
   },
@@ -156,7 +156,7 @@
   "@userNameNotice": {
     "description": ""
   },
-  "defineStrongPassword": "Définir un mot de passe sécurisé: mélange des lettres minuscules, majuscules, des chiffres et caractères spéciaux.",
+  "defineStrongPassword": "Définir un mot de passe sécurisé: au moins 6 caractères, mélange des lettres minuscules, majuscules, des chiffres et caractères spéciaux.",
   "@defineStrongPassword": {
     "description": ""
   },
@@ -200,7 +200,7 @@
   "@registration": {
     "description": ""
   },
-  "selectCountry": "Sél. un pays",
+  "selectCountry": "Choisir un pays",
   "@selectCountry": {
     "description": ""
   },
@@ -208,8 +208,32 @@
   "@countries": {
     "description": ""
   },
-  "typeToSearch": "Saisisser pour rechercher",
+  "typeToSearch": "Rechercher ...",
   "@typeToSearch": {
+    "description": ""
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": ""
+  },
+  "unableToLoadCountries": "Impossible de charger les pays. Veuillez réessayer.",
+  "@unableToLoadCountries": {
+    "description": ""
+  },
+  "low": "Faible",
+  "@low": {
+    "description": ""
+  },
+  "fort": "Fort",
+  "@fort": {
+    "description": ""
+  },
+  "moyen": "Moyen",
+  "@moyen": {
+    "description": ""
+  },
+  "existingEmailError": "Cette adresse électronique est déjà utilisée. Choisissez en une autre.",
+  "@existingEmailError": {
     "description": ""
   }
 }

@@ -130,4 +130,12 @@ class Palette {
   Color iconColor(double opacity) {
     return _iconColor.withOpacity(opacity);
   }
+
+  // Assets
+
+  Map<String, String> assetsIllustration() {
+    return {
+      'error': isDark ? 'assets/images/error_illustration.png' : 'assets/images/error_illustration.png',
+    };
+  }
 }

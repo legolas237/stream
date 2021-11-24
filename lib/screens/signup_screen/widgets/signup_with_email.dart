@@ -3,16 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:stream/config/config.dart';
-import 'package:stream/screens/auth_screen/widgets/controlled_input.dart';
-import 'package:stream/screens/auth_screen/widgets/date_input.dart';
-import 'package:stream/screens/auth_screen/widgets/email_input.dart';
-import 'package:stream/screens/auth_screen/widgets/password_input.dart';
-import 'package:stream/screens/auth_screen/widgets/username_input.dart';
+import 'package:stream/widgets/controlled_input/controlled_input.dart';
+import 'package:stream/widgets/date_input/date_input.dart';
+import 'package:stream/widgets/password_input/password_input.dart';
+import 'package:stream/widgets/username_input/username_input.dart';
 import 'package:stream/screens/signup_screen/blocs/signup_bloc/signup_bloc.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/button/button.dart';
 import 'package:stream/widgets/divider/divider.dart';
+import 'package:stream/widgets/email_input/email_input_bloc_provider.dart';
+import 'package:stream/widgets/username_input/username_input_bloc_provider.dart';
 
 // ignore: must_be_immutable
 class SignUpWthEmailWidget extends StatelessWidget {
@@ -58,9 +59,9 @@ class SignUpWthEmailWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              EmailInputWidget(),
+              EmailInputWidgetBlocProvider(),
               DividerWidget(),
-              UserNameInputWidget(),
+              UsernameInputWidgetBlocProvider(),
               DividerWidget(),
               const SizedBox(height: 20.0),
               Padding(
@@ -74,7 +75,7 @@ class SignUpWthEmailWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle1!.merge(
                     const TextStyle(
                       fontSize: 12.0,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -155,6 +156,7 @@ class BasicInformationWidget extends StatelessWidget {
           ControlledInputWidget(
             keyboardType: TextInputType.text,
             hintText: AppLocalizations.of(context)!.lastName,
+            validateCallback: (value) => value.isNotEmpty,
           ),
           DividerWidget(),
           ControlledInputWidget(
@@ -192,6 +194,7 @@ class BasicInformationWidget extends StatelessWidget {
           ),
           DateInputWidget(
             hintText: AppLocalizations.of(context)!.yourBirthday,
+            validateCallback: _validate,
           ),
           DividerWidget(),
           const SizedBox(height: 20.0),
@@ -216,5 +219,11 @@ class BasicInformationWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Callback
+
+  bool _validate(DateTime? date){
+    return date != null;
   }
 }

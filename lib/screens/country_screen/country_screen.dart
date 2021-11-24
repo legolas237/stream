@@ -11,6 +11,7 @@ import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
 import 'package:stream/widgets/border_wrapper/border_wrapper.dart';
+import 'package:stream/widgets/error_wrapper/error_wrapper.dart';
 import 'package:stream/widgets/list_tile/list_tile.dart';
 import 'package:stream/widgets/list_tile_title/list_tile_title.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
@@ -68,7 +69,7 @@ class _CountryScreenState extends State<CountryScreen> {
           automaticallyImplyLeading: false,
           centerTitle: false,
           title: _buildAppTitle(),
-          leading: searching ? null : AppBarActionWidget(
+          leading: AppBarActionWidget(
             icon: AppBarActionWidget.buildIcon(
               icon: Icons.arrow_back_outlined,
               color: searching ? widget.palette.captionColor(1.0) : widget.palette.whiteColor(1.0),
@@ -91,6 +92,10 @@ class _CountryScreenState extends State<CountryScreen> {
   // Render
 
   Widget _buildWidgetTree(CountryState state) {
+    if(state is LoadFailed) {
+      return _buildErrorWrapper();
+    }
+
     if(state is LoadSuccess) {
       return GroupedListView(
         stickyHeaderBackgroundColor: widget.palette.whiteColor(1.0),
@@ -199,6 +204,26 @@ class _CountryScreenState extends State<CountryScreen> {
                 ),
               ],
             ),
+            subtitle: currentCountry.nativeName != currentCountry.designation ? SubstringHighlight(
+              text: currentCountry.nativeName,
+              term: controller.text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              caseSensitive: true,
+              textStyle: Theme.of(context).textTheme.caption!.merge(
+                const TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              textStyleHighlight: Theme.of(context).textTheme.caption!.merge(
+                TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w500,
+                  color: widget.palette.accentBrandColor(1.0),
+                ),
+              ),
+            ) : null,
           );
         },
         // itemComparator: (item1, item2) => (item1 as Country).designation[0] != (item2 as Country).designation[0] ? 1 : 0,
@@ -212,6 +237,10 @@ class _CountryScreenState extends State<CountryScreen> {
   }
 
   List<Widget> _buildAppActions(CountryState state) {
+    if(state is LoadFailed) {
+      return const [];
+    }
+
     if(state is LoadingCountries) {
       return [
         Row(
@@ -252,6 +281,17 @@ class _CountryScreenState extends State<CountryScreen> {
                 BlocProvider.of<CountryBloc>(context).add(const SearchCountry(query: '',),);
               },
             ),
+            AppBarActionWidget(
+              splashColor: widget.palette.splashLightColor(1.0),
+              highLightColor: widget.palette.highLightLightColor(1.0),
+              icon: AppBarActionWidget.buildIcon(
+                icon: Icons.check_outlined,
+                color: !searching ? widget.palette.whiteColor(1.0) : widget.palette.captionColor(1.0),
+              ),
+              onPressed: () {
+                Navigator.pop<Country>(context, country);
+              },
+            ),
           ],
         )
       ];
@@ -273,17 +313,6 @@ class _CountryScreenState extends State<CountryScreen> {
           ),
           AppBarActionWidget(
             icon: AppBarActionWidget.buildIcon(
-              icon: Icons.refresh_outlined,
-              color: widget.palette.whiteColor(1.0),
-            ),
-            onPressed: () {
-              BlocProvider.of<CountryBloc>(context).add(
-                LoadCountries(),
-              );
-            },
-          ),
-          AppBarActionWidget(
-            icon: AppBarActionWidget.buildIcon(
               icon: Icons.check_outlined,
               color: widget.palette.whiteColor(1.0),
             ),
@@ -296,7 +325,7 @@ class _CountryScreenState extends State<CountryScreen> {
     ];
   }
 
-   Widget _buildAppTitle() {
+  Widget _buildAppTitle() {
     if(searching) {
       return TextField(
         autofocus: false,
@@ -335,7 +364,31 @@ class _CountryScreenState extends State<CountryScreen> {
     return ScaffoldWidget.buildTitle(
       context,
       widget.palette,
-      AppLocalizations.of(context)!.countries,
+      AppLocalizations.of(context)!.selectCountry,
     );
    }
+
+  Widget _buildErrorWrapper() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery
+                .of(context)
+                .size
+                .width * 0.16,
+          ),
+          child: ErrorWrapperWidget(
+            assetImage: widget.palette.assetsIllustration()['error'],
+            title: AppLocalizations.of(context)!.oopsError,
+            subTitle: AppLocalizations.of(context)!.unableToLoadCountries,
+            callback: () {
+              BlocProvider.of<CountryBloc>(context).add(LoadCountries());
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

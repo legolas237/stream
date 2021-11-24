@@ -3,16 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:stream/config/config.dart';
-import 'package:stream/screens/auth_screen/widgets/controlled_input.dart';
-import 'package:stream/screens/auth_screen/widgets/date_input.dart';
-import 'package:stream/screens/auth_screen/widgets/otp_input.dart';
-import 'package:stream/screens/auth_screen/widgets/telephone_input.dart';
-import 'package:stream/screens/auth_screen/widgets/username_input.dart';
+import 'package:stream/widgets/controlled_input/controlled_input.dart';
+import 'package:stream/widgets/date_input/date_input.dart';
+import 'package:stream/widgets/otp_input/otp_input.dart';
+import 'package:stream/widgets/telephone_input/telephone_input.dart';
+import 'package:stream/widgets/username_input/username_input.dart';
 import 'package:stream/screens/signup_screen/blocs/signup_bloc/signup_bloc.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/button/button.dart';
 import 'package:stream/widgets/divider/divider.dart';
+import 'package:stream/widgets/username_input/username_input_bloc_provider.dart';
 
 // ignore: must_be_immutable
 class SignUpWthTelephoneWidget extends StatelessWidget {
@@ -146,7 +147,7 @@ class BasicInformationWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20.0),
-          UserNameInputWidget(),
+          UsernameInputWidgetBlocProvider(),
           DividerWidget(),
           ControlledInputWidget(
             keyboardType: TextInputType.text,

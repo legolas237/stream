@@ -156,7 +156,7 @@
   "@userNameNotice": {
     "description": ""
   },
-  "defineStrongPassword": "Set a secure password: mix of lowercase letters, uppercase letters, numbers and special characters.",
+  "defineStrongPassword": "Set a secure password: au moins 6 caractères, mix of lowercase letters, uppercase letters, numbers and special characters.",
   "@defineStrongPassword": {
     "description": ""
   },
@@ -210,6 +210,30 @@
   },
   "typeToSearch": "Type to search",
   "@typeToSearch": {
+    "description": ""
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": ""
+  },
+  "unableToLoadCountries": "Impossible de charger les pays. Veuillez réessayer.",
+  "@unableToLoadCountries": {
+    "description": ""
+  },
+  "low": "Low",
+  "@low": {
+    "description": ""
+  },
+  "fort": "Strong",
+  "@fort": {
+    "description": ""
+  },
+  "moyen": "Way",
+  "@moyen": {
+    "description": ""
+  },
+  "existingEmailError": "Cette adresse électronique est déjà utilisée. Choisissez en une autre",
+  "@existingEmailError": {
     "description": ""
   }
 }

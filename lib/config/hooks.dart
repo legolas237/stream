@@ -82,4 +82,8 @@ class Hooks {
     return encoder.convert(json);
   }
 
+  static bool isDigit(String value, int index) {
+    return  "0".compareTo(value[index]) <= 0 && "9".compareTo(value[index]) >= 0;
+  }
+
 }
