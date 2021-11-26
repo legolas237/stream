@@ -235,5 +235,9 @@
   "existingEmailError": "Cette adresse électronique est déjà utilisée. Choisissez en une autre",
   "@existingEmailError": {
     "description": ""
+  },
+  "somethingWrong": "An error has occurred. Try again later",
+  "@somethingWrong": {
+    "description": ""
   }
 }

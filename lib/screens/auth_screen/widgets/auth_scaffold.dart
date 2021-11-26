@@ -4,6 +4,7 @@ import 'package:stream/config/config.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
+import 'package:stream/widgets/border_wrapper/border_wrapper.dart';
 
 // ignore: must_be_immutable
 class AuthScaffoldWidget extends StatelessWidget {
@@ -29,25 +30,29 @@ class AuthScaffoldWidget extends StatelessWidget {
 
     return ScaffoldWidget(
       backgroundColor: palette.scaffoldColor(1.0),
-      appBarBackgroundColor: palette.secondaryBrandColor(1.0),
+      appBarBackgroundColor: palette.scaffoldColor(1.0),
       annotationRegion: palette.annotationRegionColor(1.0),
       automaticallyImplyLeading: false,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       centerTitle: false,
       title: contentAppBar,
-      body: Column(
-        children: [
-          Expanded(
-            child: content,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Constants.horizontalPadding,
-              vertical: Constants.verticalPadding,
+      body: BorderlessWrapperWidget(
+        bottom: false,
+        top: true,
+        child: Column(
+          children: [
+            Expanded(
+              child: content,
             ),
-            child: contentBottom,
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Constants.horizontalPadding,
+                vertical: Constants.verticalPadding,
+              ),
+              child: contentBottom,
+            ),
+          ],
+        ),
       ),
     );
   }

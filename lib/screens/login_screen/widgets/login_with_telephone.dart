@@ -57,7 +57,6 @@ class LoginWithTelephoneWidget extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               TelephoneInputWidget(
-                country: Constants.defaultCountry,
               ),
               DividerWidget(),
               const SizedBox(height: 20.0),

@@ -20,10 +20,12 @@ class AuthInputWidget extends StatelessWidget {
     this.style,
     this.inputFormatters,
     this.maxLength,
+    this.readOnly = false,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final String? hintText;
   final TextStyle? style;
   final int? maxLength;
@@ -51,12 +53,14 @@ class AuthInputWidget extends StatelessWidget {
       textAlign: TextAlign.left,
       maxLength: maxLength,
       style: style ?? Theme.of(context).textTheme.subtitle1!.merge(
-        const TextStyle(
+        TextStyle(
           fontSize: 13.0,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
+          color: readOnly ? palette.captionColor(0.8) : palette.textColor(1.0),
         ),
       ),
       obscureText: obscureText,
+      readOnly: readOnly,
       decoration: InputDecoration(
         filled: false,
         isDense: true,

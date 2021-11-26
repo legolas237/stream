@@ -63,7 +63,7 @@
   "@yourPassword": {
     "description": ""
   },
-  "loginWith": "Se conn. avec",
+  "loginWith": "Se connecter avec",
   "@loginWith": {
     "description": ""
   },
@@ -234,6 +234,10 @@
   },
   "existingEmailError": "Cette adresse électronique est déjà utilisée. Choisissez en une autre.",
   "@existingEmailError": {
+    "description": ""
+  },
+  "somethingWrong": "Une erreur est survenue. Réessayer plus tard",
+  "@somethingWrong": {
     "description": ""
   }
 }

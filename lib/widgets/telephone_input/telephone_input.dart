@@ -8,16 +8,17 @@ import 'package:stream/widgets/auth_input/auth_input.dart';
 import 'package:stream/screens/country_screen/country_screen_bloc_provider.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
-import 'package:stream/widgets/spinner/spinner.dart';
 
 class PhoneNumber {
   PhoneNumber({
     required this.phoneNumber,
+    required this.nationalNumber,
     required this.isValid,
-    this.country,
+    this.country = Constants.defaultCountry,
   });
 
   String phoneNumber;
+  String nationalNumber;
   Country? country;
   bool isValid;
 }
@@ -28,13 +29,15 @@ class TelephoneInputWidget extends StatefulWidget {
     Key? key,
     this.onChanged,
     this.controller,
-    required this.country,
+    this.phoneNumber,
     this.allowValidation = false,
+    this.readOnly = false,
   }) : super(key: key);
 
   late Palette palette;
 
-  final Country country;
+  final bool readOnly;
+  final PhoneNumber? phoneNumber;
   final bool allowValidation;
   final TextEditingController? controller;
   final ValueChanged<PhoneNumber>? onChanged;
@@ -52,9 +55,11 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
   void initState() {
     super.initState();
 
-    phoneNumber = PhoneNumber(phoneNumber: "", isValid: false);
-    country = widget.country;
-    controller = widget.controller ?? TextEditingController(text: "");
+    phoneNumber = widget.phoneNumber ?? PhoneNumber(phoneNumber: "", nationalNumber: "", isValid: false,);
+    country = phoneNumber.country!;
+    controller = widget.controller ?? TextEditingController(
+        text: phoneNumber.nationalNumber,
+    );
   }
 
   @override
@@ -81,14 +86,9 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
                 Expanded(
                   child: AuthInputWidget(
                     controller: controller,
+                    readOnly: widget.readOnly,
                     keyboardType: TextInputType.number,
                     hintText: AppLocalizations.of(context)!.phoneNumber,
-                    style: Theme.of(context).textTheme.subtitle1!.merge(
-                      const TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
                     inputFormatters: [
                       LibPhonenumberTextFormatter(
                         overrideSkipCountryCode: country.alphaCode.toUpperCase(),
@@ -126,7 +126,9 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
   Widget _buildPrefix() {
     return GestureDetector(
       onTap: () {
-        _navigateToGetCountry();
+        if(! widget.readOnly) {
+          _navigateToGetCountry();
+        }
       },
       child: Row(
         children: [
@@ -140,9 +142,10 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
           Text(
             country.dialCode,
             style: Theme.of(context).textTheme.subtitle1!.merge(
-              const TextStyle(
+              TextStyle(
                 fontSize: 13.0,
                 fontWeight: FontWeight.w600,
+                color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.textColor(1.0),
               ),
             ),
           ),
@@ -156,11 +159,15 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
       return Icon(
         Icons.check_circle,
         size: 15.0,
-        color: widget.palette.secondaryBrandColor(1.0),
+        color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
       );
     }
 
-    return const SizedBox();
+    return Icon(
+      Icons.check_circle,
+      size: 15.0,
+      color: widget.palette.captionColor(0.2),
+    );
    }
 
    // Callback
@@ -195,19 +202,23 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
         setState(() {
           phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
           phoneNumber.isValid = true;
+          phoneNumber.nationalNumber = parsedPhoneNumber['national_number'];
         });
       } else{
         phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
         phoneNumber.isValid = true;
+        phoneNumber.nationalNumber = parsedPhoneNumber['national_number'];
       }
     } catch (error) {
       if(widget.allowValidation) {
         setState(() {
           phoneNumber.phoneNumber = "";
+          phoneNumber.nationalNumber = "";
           phoneNumber.isValid = false;
         });
       } else{
         phoneNumber.phoneNumber = "";
+        phoneNumber.nationalNumber = "";
         phoneNumber.isValid = false;
       }
     }

@@ -365,6 +365,7 @@ class _CountryScreenState extends State<CountryScreen> {
       context,
       widget.palette,
       AppLocalizations.of(context)!.selectCountry,
+      widget.palette.whiteColor(1.0),
     );
    }
 
@@ -374,10 +375,7 @@ class _CountryScreenState extends State<CountryScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery
-                .of(context)
-                .size
-                .width * 0.16,
+            horizontal: MediaQuery.of(context).size.width * 0.16,
           ),
           child: ErrorWrapperWidget(
             assetImage: widget.palette.assetsIllustration()['error'],

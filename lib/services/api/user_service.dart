@@ -19,6 +19,7 @@ class UserService extends ApiClient {
 
     return null;
   }
+
   Future<ApiResponse?> verifyUserName(String username) async {
     var response = await httpClient.get(
       Uri.parse(
