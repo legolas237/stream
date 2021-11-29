@@ -73,7 +73,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
     var style = Theme.of(context).textTheme.subtitle1!.merge(
       const TextStyle(
         fontSize: 13.0,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w600,
       ),
     );
 
@@ -122,7 +122,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
                 highLightColor: widget.palette.highLightLightColor(1.0),
                 icon: Icon(
                   Icons.today_outlined,
-                  size: 20.0,
+                  size: 18.0,
                   color: widget.palette.captionColor(1.0),
                 ),
               ),

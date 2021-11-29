@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
@@ -8,6 +9,9 @@ import 'package:stream/widgets/auth_input/auth_input.dart';
 import 'package:stream/screens/country_screen/country_screen_bloc_provider.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
+import 'package:stream/widgets/spinner/spinner.dart';
+import 'package:stream/widgets/telephone_input/bloc/telephone_verify_bloc.dart';
+import 'package:stream/widgets/text_error/text_error.dart';
 
 class PhoneNumber {
   PhoneNumber({
@@ -73,51 +77,71 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
     // Get theme palette
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.only(
-              left: Constants.horizontalPadding,
-            ),
-            child: Row(
-              children: [
-                _buildPrefix(),
-                Expanded(
-                  child: AuthInputWidget(
-                    controller: controller,
-                    readOnly: widget.readOnly,
-                    keyboardType: TextInputType.number,
-                    hintText: AppLocalizations.of(context)!.phoneNumber,
-                    inputFormatters: [
-                      LibPhonenumberTextFormatter(
-                        overrideSkipCountryCode: country.alphaCode.toUpperCase(),
-                        phoneNumberType: PhoneNumberType.mobile,
-                        phoneNumberFormat: PhoneNumberFormat.national,
+    return BlocConsumer<TelephoneVerifyBloc, TelephoneVerifyState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: Constants.horizontalPadding,
                       ),
-                    ],
-                    contentPadding: const EdgeInsets.only(
-                      left: 20.0,
-                      top: 18.0,
-                      bottom: 18.0,
+                      child: Row(
+                        children: [
+                          _buildPrefix(),
+                          Expanded(
+                            child: AuthInputWidget(
+                              controller: controller,
+                              readOnly: widget.readOnly,
+                              keyboardType: TextInputType.number,
+                              hintText: AppLocalizations.of(context)!.phoneNumber,
+                              inputFormatters: [
+                                LibPhonenumberTextFormatter(
+                                  overrideSkipCountryCode: country.alphaCode.toUpperCase(),
+                                  phoneNumberType: PhoneNumberType.mobile,
+                                  phoneNumberFormat: PhoneNumberFormat.national,
+                                ),
+                              ],
+                              contentPadding: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 18.0,
+                                bottom: 18.0,
+                              ),
+                              onChanged: (value) {
+                                _parsePhoneNumber();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    onChanged: (value) {
-                      _parsePhoneNumber();
-                    },
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 20.0,
-          ),
-          child: _buildSuffix(),
-        ),
-      ],
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      right: 20.0,
+                    ),
+                    child: _buildSuffix(state),
+                  ),
+                ],
+              ),
+              if(state.status == CheckStatus.existing) Padding(
+                padding: const EdgeInsets.only(
+                  left: Constants.horizontalPadding,
+                  right: Constants.horizontalPadding,
+                  bottom: Constants.verticalPadding,
+                ),
+                child:TextErrorWidget(
+                  text: AppLocalizations.of(context)!.existingTelephoneError,
+                ),
+              )
+            ],
+          );
+        },
     );
   }
 
@@ -154,20 +178,43 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
     );
   }
 
-  Widget _buildSuffix() {
-    if(phoneNumber.isValid) {
-      return Icon(
-        Icons.check_circle,
-        size: 15.0,
-        color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
+  Widget _buildSuffix(TelephoneVerifyState state) {
+    if (state.status == CheckStatus.verifying) {
+      return SizedBox(
+          height: 14.0,
+          width: 14.0,
+          child: SpinnerWidget(
+            colors: AlwaysStoppedAnimation<Color>(widget.palette.secondaryBrandColor(1.0),),
+            strokeWidth: 1.6,
+          )
       );
     }
 
-    return Icon(
-      Icons.check_circle,
-      size: 15.0,
-      color: widget.palette.captionColor(0.2),
-    );
+    if (widget.allowValidation) {
+      if(state.status == CheckStatus.failure || state.status == CheckStatus.existing) {
+        return Icon(
+          Icons.check_circle,
+          size: 15.0,
+          color: widget.readOnly ? widget.palette.captionColor(0.8) : Theme.of(context).errorColor,
+        );
+      }
+
+      if(phoneNumber.isValid) {
+        return Icon(
+          Icons.check_circle,
+          size: 15.0,
+          color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
+        );
+      }
+
+      return Icon(
+        Icons.check_circle,
+        size: 15.0,
+        color: widget.palette.captionColor(0.2),
+      );
+    }
+
+    return const SizedBox();
    }
 
    // Callback
@@ -204,6 +251,10 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
           phoneNumber.isValid = true;
           phoneNumber.nationalNumber = parsedPhoneNumber['national_number'];
         });
+
+        BlocProvider.of<TelephoneVerifyBloc>(context).add(
+          Verify(telephone: parsedPhoneNumber['e164'],),
+        );
       } else{
         phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
         phoneNumber.isValid = true;

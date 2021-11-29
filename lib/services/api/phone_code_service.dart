@@ -26,4 +26,20 @@ class PhoneCodeService extends ApiClient {
     return null;
   }
 
+  Future<ApiResponse?> verify(String otp, String telephone) async {
+    var response = await httpClient.put(
+        Uri.parse(url.replaceFirst('{3}', 'verify')).toString(),
+        data: {
+          'otp': otp,
+          'telephone': telephone,
+        }
+    );
+
+    if (response.statusCode == 200) {
+      return ApiResponse.fromJson(json.decode(response.data));
+    }
+
+    return null;
+  }
+
 }

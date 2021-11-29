@@ -18,4 +18,11 @@ class UserRepository {
     return service.verifyUserName(username);
   }
 
+  Future<ApiResponse?> verifyTelephone(String telephone) async {
+    return service.verifyTelephone(telephone);
+  }
+
+  Future<ApiResponse?> registration(Map<String, String> data,) async {
+    return service.registration(data);
+  }
 }

@@ -8,4 +8,7 @@ class PhoneCodeRepository {
     return service.send(countryIsoCode, telephone);
   }
 
+  Future<ApiResponse?> verify(String otp, String telephone) async {
+    return service.verify(otp, telephone);
+  }
 }

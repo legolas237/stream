@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:stream/config/config.dart';
+import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
 import 'package:stream/widgets/auth_input/auth_input.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
@@ -13,10 +14,12 @@ class OtpInputWidget extends StatefulWidget {
     this.onChanged,
     this.controller,
     this.validateCallback,
+    this.readOnly = true,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final TextEditingController? controller;
   final bool Function(String)? validateCallback;
   final Function(String)? onChanged;
@@ -52,13 +55,16 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
       children: [
         Expanded(
           child: AuthInputWidget(
+            controller: controller,
+            readOnly: widget.readOnly,
             hintText: AppLocalizations.of(context)!.code,
             maxLength: Constants.otpLength,
             keyboardType: TextInputType.number,
             style: Theme.of(context).textTheme.subtitle1!.merge(
-              const TextStyle(
+              TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w600,
+                color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.textColor(1.0),
               ),
             ),
             contentPadding: const EdgeInsets.only(
@@ -91,22 +97,57 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
   // Render
 
    Widget _buildSuffix() {
+     return Row(
+       crossAxisAlignment: CrossAxisAlignment.center,
+       children: [
+         AppBarActionWidget(
+           onPressed: () {
+             controller.clear();
+             if(widget.onChanged != null) widget.onChanged!('');
+             if(widget.validateCallback != null) {
+               setState(() {
+                 isValid = widget.validateCallback!('');
+               });
+             }
+           },
+           splashColor: widget.palette.splashLightColor(1.0),
+           highLightColor: widget.palette.highLightLightColor(1.0),
+           icon: Icon(
+             Icons.close,
+             size: 16.0,
+             color: widget.palette.captionColor(0.8),
+           ),
+         ),
+         _buildSuffixValidation(),
+       ],
+     );
+
+    return const SizedBox();
+   }
+
+  Widget _buildSuffixValidation() {
     if(widget.validateCallback != null && isValid) {
-      return Icon(
-        Icons.check_circle,
-        size: 15.0,
-        color: widget.palette.secondaryBrandColor(1.0),
+      return Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Icon(
+          Icons.check_circle,
+          size: 15.0,
+          color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
+        )
       );
     }
 
     if(widget.validateCallback != null) {
-      return Icon(
-        Icons.check_circle,
-        size: 15.0,
-        color: widget.palette.captionColor(0.2),
+      return Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Icon(
+            Icons.check_circle,
+            size: 15.0,
+            color: widget.palette.captionColor(0.2),
+          ),
       );
     }
 
     return const SizedBox();
-   }
+  }
 }

@@ -118,7 +118,7 @@ class _PasswordInputWidgetState extends State<PasswordInputWidget> {
           highLightColor: widget.palette.highLightLightColor(1.0),
           icon: Icon(
             isVisible ? Icons.remove_red_eye_outlined : Icons.visibility_off_outlined,
-            size: 20.0,
+            size: 18.0,
             color: isVisible ? widget.palette.secondaryBrandColor(1.0) : widget.palette.captionColor(1.0),
           ),
         ),

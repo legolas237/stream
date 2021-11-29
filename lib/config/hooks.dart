@@ -43,6 +43,7 @@ class Hooks {
     debugPrint('Starting O\'Stream services....');
     await Get.putAsync(() => StorageService().init());
     await Get.putAsync(() => PhoneNumberLibService().init());
+    await Get.putAsync(() => DeviceInfoService().init());
     debugPrint('All O\'Stream services started...');
   }
 

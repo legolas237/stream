@@ -33,7 +33,7 @@ class OStreamAppTheme {
       focusColor: palette.secondaryHighLightColor(1),
       highlightColor: palette.secondaryHighLightColor(1),
       splashColor: palette.secondarySplashColor(1),
-      textSelectionTheme: const TextSelectionThemeData().copyWith(
+      textSelectionTheme: Theme.of(context).textSelectionTheme.copyWith(
         selectionColor: palette.secondaryBrandColor(1),
         cursorColor: palette.secondaryBrandColor(1),
         selectionHandleColor: palette.secondaryBrandColor(1),
@@ -53,7 +53,7 @@ class OStreamAppTheme {
         opacity: 1,
       ),
       tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
-        decoration: BoxDecoration(color: palette.whiteColor(1)),
+        decoration: BoxDecoration(color: palette.textColor(1)),
       ),
       bottomAppBarTheme: Theme.of(context).bottomAppBarTheme.copyWith(
         color: palette.scaffoldColor(1),

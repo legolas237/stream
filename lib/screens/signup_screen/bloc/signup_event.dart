@@ -35,3 +35,43 @@ class ChangeStep extends SignUpEvent {
   @override
   List<Object?> get props => [step];
 }
+
+class VerifyOtp extends SignUpEvent {
+  const VerifyOtp({
+    required this.otp,
+  });
+
+  final String otp;
+
+  @override
+  String toString() => 'VerifyOtp';
+
+  @override
+  List<Object?> get props => [otp];
+}
+
+class InputChange extends SignUpEvent {
+  const InputChange({
+    required this.attribute,
+    required this.value,
+  });
+
+  final String attribute;
+  final dynamic value;
+
+  @override
+  String toString() => 'VerifyOtp';
+
+  @override
+  List<Object?> get props => [attribute, value,];
+}
+
+class ResetState extends SignUpEvent {
+  @override
+  String toString() => 'ResetState';
+}
+
+class MakeRegistration extends SignUpEvent {
+  @override
+  String toString() => 'MakeRegistration';
+}

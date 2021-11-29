@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:stream/blocs/counter/counter_bloc.dart';
 import 'package:stream/config/config.dart';
 import 'package:stream/screens/auth_screen/auth_screen.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_scaffold.dart';
 import 'package:stream/screens/signup_screen/bloc/signup_bloc.dart';
+import 'package:stream/screens/signup_screen/widgets/basic_info_code.dart';
+import 'package:stream/screens/signup_screen/widgets/define_profile.dart';
 import 'package:stream/screens/signup_screen/widgets/verify_otp_code.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
@@ -15,6 +18,7 @@ import 'package:stream/widgets/button/button.dart';
 import 'package:stream/widgets/divider/divider.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
 import 'package:stream/widgets/telephone_input/telephone_input.dart';
+import 'package:stream/widgets/telephone_input/telephone_input_bloc_provider.dart';
 import 'package:stream/widgets/text_error/text_error.dart';
 
 // ignore: must_be_immutable
@@ -47,7 +51,13 @@ class _SignupScreenState extends State<SignupScreen> {
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
     return BlocConsumer<SignUpBloc, SignUpState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state.status == SignUpStatus.otpSent) {
+          BlocProvider.of<CounterBloc>(context).add(
+            const LaunchCounter(increment: false),
+          );
+        }
+      },
       builder: (context, state) {
         return AuthScaffoldWidget(
           contentBottom: Column(
@@ -133,9 +143,11 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     if(state.step == 2) {
+      return BasicInformationWidget();
     }
 
     if(state.step == 3) {
+      return DefineProfileWidget();
     }
 
     return SingleChildScrollView(
@@ -163,7 +175,8 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
           const SizedBox(height: 20.0),
-          TelephoneInputWidget(
+          TelephoneInputWidgetBlocProvider(
+            allowValidation: true,
             phoneNumber: phoneNumber,
             readOnly: state.status == SignUpStatus.processing,
             onChanged: (phone) {
@@ -189,10 +202,10 @@ class _SignupScreenState extends State<SignupScreen> {
       decorator: DotsDecorator(
         color: widget.palette.captionColor(0.3),
         activeColor: widget.palette.secondaryBrandColor(1.0),
-        size: const Size.square(9.0),
-        activeSize: const Size(16.0, 9.0),
+        size: const Size.square(6.0),
+        activeSize: const Size(14.0, 6.0),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(6.0),
         ),
       ),
     );

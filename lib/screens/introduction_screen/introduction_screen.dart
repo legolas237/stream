@@ -193,10 +193,10 @@ class _IntroScreenState extends State<IntroScreen> {
       decorator: DotsDecorator(
         color: widget.palette.captionColor(0.3),
         activeColor: widget.palette.secondaryBrandColor(1.0),
-        size: const Size.square(9.0),
-        activeSize: const Size(18.0, 9.0),
+        size: const Size.square(8.0),
+        activeSize: const Size(16.0, 8.0),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
       ),
     );

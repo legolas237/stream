@@ -152,11 +152,11 @@
   "@userName": {
     "description": ""
   },
-  "userNameNotice": "C'est celui qui apparaitra dans vos commentaires et servira à vous identifier.",
+  "userNameNotice": "Il vous identifie, apparait dans vos commentaires, vos publications & partages.",
   "@userNameNotice": {
     "description": ""
   },
-  "defineStrongPassword": "Définir un mot de passe sécurisé: au moins 6 caractères, mélange des lettres minuscules, majuscules, des chiffres et caractères spéciaux.",
+  "defineStrongPassword": "Au moins 6 caractères, mélange des lettres minuscules, majuscules, des chiffres et caractères spéciaux.",
   "@defineStrongPassword": {
     "description": ""
   },
@@ -236,8 +236,20 @@
   "@existingEmailError": {
     "description": ""
   },
+  "existingTelephoneError": "Ce numéro de téléphone est déjà utilisé. Choisissez en une autre ou connectez-vous s'il s'agit de vous",
+  "@existingTelephoneError": {
+    "description": ""
+  },
   "somethingWrong": "Une erreur est survenue. Réessayer plus tard",
   "@somethingWrong": {
+    "description": ""
+  },
+  "resendCode": "Renvoyer le code",
+  "@resendCode": {
+    "description": ""
+  },
+  "signupNotice": "C'est presque terminé. Remplissez le formulaire suivant",
+  "@signupNotice": {
     "description": ""
   }
 }
