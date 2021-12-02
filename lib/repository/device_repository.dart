@@ -26,7 +26,6 @@ class DeviceRepository {
 
   static void _readAndroidBuildData(AndroidDeviceInfo build) {
     _deviceInfo = <String, dynamic>{
-      'version.full': build.version.toString(),
       'version.securityPatch': build.version.securityPatch,
       'version.sdkInt': build.version.sdkInt,
       'version.release': build.version.release,
@@ -79,7 +78,7 @@ class DeviceRepository {
 
     try {
       if (Platform.isAndroid) {
-        result = "${_deviceInfo['id']}_${_deviceInfo['version.full']}_${_deviceInfo['model']}";
+        result = "${_deviceInfo['id']}_${_deviceInfo['model']}";
       } else if (Platform.isIOS) {
         result = "${_deviceInfo['name']}_${_deviceInfo['model']}_${_deviceInfo['identifierForVendor']}";
       }

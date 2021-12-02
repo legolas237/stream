@@ -16,28 +16,28 @@ enum SignUpStatus {
 class SignUpState extends Equatable {
   SignUpState({
     this.status = SignUpStatus.initial,
-    this.message,
     this.step = 0,
     this.phoneNumber,
     this.registrationData = const {},
+    this.messages = const {},
   });
 
   final SignUpStatus status;
-  final String? message;
+  final dynamic messages;
   final int step;
   final PhoneNumber? phoneNumber;
   Map<String, String> registrationData;
 
   SignUpState copyWith({
     SignUpStatus? status,
-    String? message,
+    dynamic messages,
     int? step,
     PhoneNumber? phoneNumber,
     Map<String, String>? registrationData,
   }) {
     return SignUpState(
       status: status ?? this.status,
-      message: message ?? this.message,
+      messages: messages ?? this.messages,
       step: step ?? this.step,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       registrationData: registrationData ?? this.registrationData,
@@ -45,5 +45,5 @@ class SignUpState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, message, step, phoneNumber, registrationData];
+  List<Object?> get props => [status, messages, step, phoneNumber, registrationData];
 }

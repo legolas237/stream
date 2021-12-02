@@ -16,14 +16,20 @@ class PasswordInputWidget extends StatefulWidget {
     this.controller,
     this.hintText,
     this.verifyStrong = true,
+    this.validate,
+    this.readOnly = false,
+    this.helperText,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final String? hintText;
   final bool verifyStrong;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final bool Function(String)? validate;
+  final Widget Function()? helperText;
 
   @override
   State<StatefulWidget> createState() => _PasswordInputWidgetState();
@@ -56,40 +62,46 @@ class _PasswordInputWidgetState extends State<PasswordInputWidget> {
 
     var passwordStatus = _computeStatus(password);
 
-    return  Row(
+    return Column(
       children: [
-        Expanded(
-          child: AuthInputWidget(
-            keyboardType: TextInputType.text,
-            obscureText: !isVisible,
-            controller: controller,
-            hintText: widget.hintText ?? AppLocalizations.of(context)!.yourPassword,
-            contentPadding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              top: 16.0,
-              bottom: 16.0,
-            ),
-            onChanged: (value) {
-              if(widget.onChanged != null) {
-                widget.onChanged!(value);
-              }
+        Row(
+          children: [
+            Expanded(
+              child: AuthInputWidget(
+                readOnly: widget.readOnly,
+                keyboardType: TextInputType.text,
+                obscureText: !isVisible,
+                controller: controller,
+                hintText: widget.hintText ?? AppLocalizations.of(context)!.yourPassword,
+                contentPadding: const EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  top: 16.0,
+                  bottom: 16.0,
+                ),
+                onChanged: (value) {
+                  if(widget.onChanged != null) {
+                    widget.onChanged!(value);
+                  }
 
-              if(widget.verifyStrong) {
-                setState(() {
-                  password = value;
-                });
-              }
-            },
-          ),
+                  if(widget.verifyStrong) {
+                    setState(() {
+                      password = value;
+                    });
+                  }
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 4.0,
+              ),
+              child: _buildSuffix(passwordStatus),
+            ),
+          ],
         ),
-        Container(
-          padding: const EdgeInsets.only(
-            left: 20.0,
-            right: 4.0,
-          ),
-          child: _buildSuffix(passwordStatus),
-        ),
+        widget.helperText != null ? widget.helperText!() : const SizedBox(),
       ],
     );
   }
@@ -165,8 +177,18 @@ class _PasswordInputWidgetState extends State<PasswordInputWidget> {
   }
 
   Color _colorStatus(bool status) {
-    if(! status) return widget.palette.captionColor(0.2);
+    if(! status) {
+      return widget.palette.captionColor(0.2);
+    }
 
-    return widget.palette.secondaryBrandColor(1.0);
+    if(widget.validate != null) {
+      var isValid = widget.validate!(controller.text);
+
+      if(! isValid) {
+        return Theme.of(context).errorColor;
+      }
+    }
+
+    return widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0);
   }
 }

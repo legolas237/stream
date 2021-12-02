@@ -60,7 +60,7 @@ class InputChange extends SignUpEvent {
   final dynamic value;
 
   @override
-  String toString() => 'VerifyOtp';
+  String toString() => 'InputChange';
 
   @override
   List<Object?> get props => [attribute, value,];

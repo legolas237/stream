@@ -78,7 +78,14 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
     return BlocConsumer<TelephoneVerifyBloc, TelephoneVerifyState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (widget.allowValidation && state.status == CheckStatus.success) {
+            setState(() {
+              phoneNumber.isValid = true;
+            });
+            if(widget.onChanged != null) widget.onChanged!(phoneNumber);
+          }
+        },
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,6 +237,13 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
     );
 
     if(selectCountry != null) {
+      if(selectCountry.alphaCode != country.alphaCode) {
+        controller.clear();
+        BlocProvider.of<TelephoneVerifyBloc>(context).add(
+          Reset(),
+        );
+      }
+
       setState(() {
         country = selectCountry;
       });
@@ -248,14 +262,13 @@ class _TelephoneInputWidgetState extends State<TelephoneInputWidget> {
       if(widget.allowValidation) {
         setState(() {
           phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
-          phoneNumber.isValid = true;
           phoneNumber.nationalNumber = parsedPhoneNumber['national_number'];
         });
 
         BlocProvider.of<TelephoneVerifyBloc>(context).add(
-          Verify(telephone: parsedPhoneNumber['e164'],),
+          Verify(telephone: parsedPhoneNumber['e164']),
         );
-      } else{
+      } else {
         phoneNumber.phoneNumber = parsedPhoneNumber['e164'];
         phoneNumber.isValid = true;
         phoneNumber.nationalNumber = parsedPhoneNumber['national_number'];

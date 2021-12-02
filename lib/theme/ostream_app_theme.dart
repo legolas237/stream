@@ -15,16 +15,11 @@ class OStreamAppTheme {
   ThemeData defaultTheme(BuildContext context) {
     return ThemeData(
       fontFamily: 'Poppins',
-      // Settings
-      brightness: Brightness.dark,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      primarySwatch: MaterialColorApp(),
-      primaryColor: palette.secondaryBrandColor(1),
-      primaryColorBrightness: Brightness.light,
-      colorScheme: Theme.of(context).colorScheme.copyWith(
-        secondary: palette.secondaryBrandColor(1),
-        brightness: Brightness.dark,
-      ),
+
+      dialogBackgroundColor: palette.whiteColor(1),
+      indicatorColor: palette.secondaryBrandColor(1),
+      hintColor: palette.captionColor(1),
+      errorColor: Colors.redAccent,
       scaffoldBackgroundColor: palette.scaffoldColor(1),
       backgroundColor: palette.scaffoldColor(1),
       bottomAppBarColor: palette.scaffoldColor(1),
@@ -33,15 +28,20 @@ class OStreamAppTheme {
       focusColor: palette.secondaryHighLightColor(1),
       highlightColor: palette.secondaryHighLightColor(1),
       splashColor: palette.secondarySplashColor(1),
+      brightness: Brightness.light,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      primarySwatch: MaterialColorApp(),
+      primaryColor: palette.secondaryBrandColor(1),
+      primaryColorBrightness: Brightness.light,
+
+      colorScheme: Theme.of(context).colorScheme.copyWith(
+        secondary: palette.secondaryBrandColor(1),
+      ),
       textSelectionTheme: Theme.of(context).textSelectionTheme.copyWith(
         selectionColor: palette.secondaryBrandColor(1),
         cursorColor: palette.secondaryBrandColor(1),
         selectionHandleColor: palette.secondaryBrandColor(1),
       ),
-      dialogBackgroundColor: palette.whiteColor(1),
-      indicatorColor: palette.secondaryBrandColor(1),
-      hintColor: palette.captionColor(1),
-      errorColor: Colors.redAccent,
       iconTheme: Theme.of(context).iconTheme.copyWith(
         color: palette.iconColor(1),
         size: 16.0,
@@ -51,9 +51,6 @@ class OStreamAppTheme {
         color: palette.iconColor(1),
         size: 16.0,
         opacity: 1,
-      ),
-      tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
-        decoration: BoxDecoration(color: palette.textColor(1)),
       ),
       bottomAppBarTheme: Theme.of(context).bottomAppBarTheme.copyWith(
         color: palette.scaffoldColor(1),

@@ -13,15 +13,19 @@ class ControlledInputWidget extends StatefulWidget {
     this.hintText,
     this.keyboardType = TextInputType.text,
     this.validateCallback,
+    this.readOnly = false,
+    this.helperText,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final String? hintText;
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final bool Function(String)? validateCallback;
   final Function(String)? onChanged;
+  final Widget Function()? helperText;
 
   @override
   State<StatefulWidget> createState() => _ControlledInputWidgetState();
@@ -50,35 +54,42 @@ class _ControlledInputWidgetState extends State<ControlledInputWidget> {
     // Get theme palette
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: AuthInputWidget(
-            keyboardType: widget.keyboardType,
-            hintText: widget.hintText,
-            contentPadding: const EdgeInsets.only(
-              left: 20.0,
-              top: 18.0,
-              bottom: 18.0,
-            ),
-            onChanged: (value) {
-              if(widget.onChanged != null) widget.onChanged!(value);
+        Row(
+          children: [
+            Expanded(
+              child: AuthInputWidget(
+                readOnly: widget.readOnly,
+                keyboardType: widget.keyboardType,
+                hintText: widget.hintText,
+                contentPadding: const EdgeInsets.only(
+                  left: 20.0,
+                  top: 18.0,
+                  bottom: 18.0,
+                ),
+                onChanged: (value) {
+                  if(widget.onChanged != null) widget.onChanged!(value);
 
-              if(widget.validateCallback != null) {
-                setState(() {
-                  isValid = widget.validateCallback!(value);
-                });
-              }
-            },
-          ),
+                  if(widget.validateCallback != null) {
+                    setState(() {
+                      isValid = widget.validateCallback!(value);
+                    });
+                  }
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                right: 20.0,
+              ),
+              child: _buildSuffix(),
+            ),
+          ],
         ),
-        Container(
-          padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 20.0,
-          ),
-          child: _buildSuffix(),
-        ),
+        widget.helperText != null ? widget.helperText!() : const SizedBox(),
       ],
     );
   }
@@ -90,7 +101,7 @@ class _ControlledInputWidgetState extends State<ControlledInputWidget> {
       return Icon(
         Icons.check_circle,
         size: 15.0,
-        color: widget.palette.secondaryBrandColor(1.0),
+        color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
       );
     }
 

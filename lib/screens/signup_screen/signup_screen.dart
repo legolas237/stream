@@ -9,8 +9,8 @@ import 'package:stream/screens/auth_screen/auth_screen.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_scaffold.dart';
 import 'package:stream/screens/signup_screen/bloc/signup_bloc.dart';
 import 'package:stream/screens/signup_screen/widgets/basic_info_code.dart';
-import 'package:stream/screens/signup_screen/widgets/define_profile.dart';
 import 'package:stream/screens/signup_screen/widgets/verify_otp_code.dart';
+import 'package:stream/screens/tabs_screen/tabs_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
@@ -57,10 +57,14 @@ class _SignupScreenState extends State<SignupScreen> {
             const LaunchCounter(increment: false),
           );
         }
+
+        if(state.status == SignUpStatus.recorded) {
+          Navigator.of(context).pushNamedAndRemoveUntil(TabsScreen.routeName, (route) => false,);
+        }
       },
       builder: (context, state) {
         return AuthScaffoldWidget(
-          contentBottom: Column(
+          contentBottom: state.step == 3 ? _buildSetAvatarAction(state) : Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 16.0),
@@ -146,10 +150,6 @@ class _SignupScreenState extends State<SignupScreen> {
       return BasicInformationWidget();
     }
 
-    if(state.step == 3) {
-      return DefineProfileWidget();
-    }
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(
@@ -197,7 +197,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Widget _buildDotsIndicators(SignUpState state) {
     return DotsIndicator(
-      dotsCount: 4,
+      dotsCount: 3,
       position: state.step.toDouble(),
       decorator: DotsDecorator(
         color: widget.palette.captionColor(0.3),
@@ -279,7 +279,7 @@ class _SignupScreenState extends State<SignupScreen> {
           right: Constants.horizontalPadding,
         ),
         child: TextErrorWidget(
-          text: state.message ?? AppLocalizations.of(context)!.somethingWrong,
+          text: state.messages ?? AppLocalizations.of(context)!.somethingWrong,
         ),
       );
     }
@@ -298,6 +298,57 @@ class _SignupScreenState extends State<SignupScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSetAvatarAction(SignUpState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Constants.horizontalPadding,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ButtonWidget(
+            onPressed: () {},
+            enabled: true,
+            child: ButtonWidget.buttonTextChild(
+              context: context,
+              enabled: true,
+              text: AppLocalizations.of(context)!.setPhoto,
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          ButtonWidget(
+            onPressed: () {},
+            enabled: true,
+            child: ButtonWidget.buttonTextChild(
+              context: context,
+              enabled: true,
+              text: AppLocalizations.of(context)!.skip,
+              textStyle: Theme.of(context).textTheme.subtitle1!.merge(
+                const TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            style: ButtonStyleWrapper(
+              palette: widget.palette,
+              enabled: true,
+            ).build(context).copyWith(
+              backgroundColor: MaterialStateColor.resolveWith((states) {
+                  return Colors.transparent;
+                },
+              ),
+              overlayColor: MaterialStateColor.resolveWith((states) {
+                return Colors.transparent;
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }

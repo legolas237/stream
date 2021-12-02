@@ -5,6 +5,7 @@ import 'package:stream/config/config.dart';
 import 'package:stream/config/hooks.dart';
 import 'package:stream/screens/init_screen/bloc/start_bloc.dart';
 import 'package:stream/screens/introduction_screen/introduction_screen.dart';
+import 'package:stream/screens/tabs_screen/tabs_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
@@ -30,9 +31,11 @@ class InitScreen extends StatelessWidget {
       annotationRegion: palette.scaffoldColor(1.0),
       body: BlocConsumer<StartBloc, StartState>(
         listener: (context, state) {
-          Navigator.of(context).pushNamed(
-            IntroScreen.routeName,
-          );
+          if(state is StartApp) {
+            Navigator.of(context).pushNamedAndRemoveUntil(TabsScreen.routeName, (route) => false,);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(IntroScreen.routeName, (route) => false,);
+          }
         },
         builder: (context, state) {
           return Column(

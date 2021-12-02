@@ -19,3 +19,8 @@ class Verify extends TelephoneVerifyEvent {
   @override
   List<Object?> get props => [telephone];
 }
+
+class Reset extends TelephoneVerifyEvent {
+  @override
+  String toString() => 'Reset';
+}

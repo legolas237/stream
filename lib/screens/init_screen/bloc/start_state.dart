@@ -17,3 +17,8 @@ class StartApp extends StartState {
   @override
   String toString() => 'StartApp';
 }
+
+class StartLogin extends StartState {
+  @override
+  String toString() => 'StartLogin';
+}

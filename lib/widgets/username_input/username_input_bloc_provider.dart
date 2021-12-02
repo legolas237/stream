@@ -7,16 +7,18 @@ import 'package:stream/widgets/username_input/bloc/username_verify_bloc.dart';
 
 // ignore: must_be_immutable
 class UsernameInputWidgetBlocProvider extends StatelessWidget {
-  UsernameInputWidgetBlocProvider({
+  const UsernameInputWidgetBlocProvider({
     Key? key,
     this.onChanged,
     this.controller,
     this.checkUsername = true,
+    this.readOnly = true,
   }) : super(key: key);
 
+  final bool readOnly;
   final bool checkUsername;
   final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final Function(String, bool)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,11 @@ class UsernameInputWidgetBlocProvider extends StatelessWidget {
         repository: UserRepository(),
       ),
       child: UserNameInputWidget(
+        readOnly: readOnly,
         controller: controller,
-        onChanged: onChanged,
+        onChanged: (value, isValid) {
+          if(onChanged != null) onChanged!(value, isValid);
+        },
         checkUsername: checkUsername,
       ),
     );

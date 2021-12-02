@@ -25,4 +25,8 @@ class UserRepository {
   Future<ApiResponse?> registration(Map<String, String> data,) async {
     return service.registration(data);
   }
+
+  Future<ApiResponse?> authUser(String? token) async {
+    return service.authUser(token);
+  }
 }

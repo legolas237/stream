@@ -94,6 +94,11 @@ class _VerifyOtpCodeWidgetState extends State<VerifyOtpCodeWidget> {
                 const SizedBox(height: 20.0),
                 OtpInputWidget(
                   readOnly: state.status == SignUpStatus.processing,
+                  clearCallback: () {
+                    BlocProvider.of<SignUpBloc>(context).add(
+                      ResetState(),
+                    );
+                  },
                   onChanged: (value) {
                     setState(() {
                       otpValue = value;
@@ -268,7 +273,7 @@ class _VerifyOtpCodeWidgetState extends State<VerifyOtpCodeWidget> {
           bottom: Constants.verticalPadding,
         ),
         child: TextErrorWidget(
-          text: state.message ?? AppLocalizations.of(context)!.somethingWrong,
+          text: state.messages ?? AppLocalizations.of(context)!.somethingWrong,
         ),
       );
     }

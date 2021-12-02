@@ -251,5 +251,21 @@
   "signupNotice": "It's almost over. Fill out the following form",
   "@signupNotice": {
     "description": ""
+  },
+  "fullName": "Full name",
+  "@fullName": {
+    "description": ""
+  },
+  "fullNameNotice": "Your name is the one that other users will see in your comments & posts",
+  "@fullNameNotice": {
+    "description": ""
+  },
+  "setPhoto": "Edit photo",
+  "@setPhoto": {
+    "description": ""
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": ""
   }
 }

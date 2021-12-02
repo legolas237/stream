@@ -3,7 +3,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'package:stream/blocs/auth/auth_bloc.dart';
 import 'package:stream/repository/phone_code_repository.dart';
+import 'package:stream/repository/storage_repository.dart';
 import 'package:stream/repository/user_repository.dart';
 import 'package:stream/widgets/telephone_input/telephone_input.dart';
 
@@ -14,10 +16,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required this.phoneCodeRepository,
     required this.userRepository,
+    required this.authBloc,
   }) : super(SignUpState());
 
   final PhoneCodeRepository phoneCodeRepository;
   final UserRepository userRepository;
+  final AuthBloc authBloc;
 
   @override
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {
@@ -40,6 +44,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (event is MakeRegistration) {
       yield* _mapRegistrationToState(event);
     }
+
+    if (event is ResetState) {
+      yield* _mapResetToState(event);
+    }
+  }
+
+  Stream<SignUpState> _mapResetToState(ResetState event,) async* {
+    yield state.copyWith(status: SignUpStatus.initial,);
   }
 
   Stream<SignUpState> _mapRegistrationToState(MakeRegistration event,) async* {
@@ -49,35 +61,60 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       var data = Map<String, String>.from(state.registrationData);
       data['telephone'] = state.phoneNumber!.phoneNumber;
 
-      final apiResponse = await userRepository.registration(data);
+      var apiResponse = await userRepository.registration(data);
 
       if(apiResponse != null){
         switch(apiResponse.code) {
           case 100: // Okay
-            yield state.copyWith(
-              status: SignUpStatus.recorded,
-              step: 3,
-            );
+            // Get token and store it
+            var token = apiResponse.data['plainTextToken'];
+            var abilities = apiResponse.data['accessToken']['abilities'] as List;
+
+            // Get auth user infos
+            apiResponse = await userRepository.authUser(token);
+
+            if(apiResponse != null && apiResponse.code == 100){
+              // Get Auth user and store it
+              var user = apiResponse.deserializeUser();
+
+              if(user != null) {
+                await StorageRepository.setToken(token);
+                user.abilities = abilities;
+                await StorageRepository.setUser(user);
+
+                // Notify auth bloc
+                authBloc.add(
+                  AuthStatusChanged(
+                    status: AuthStatus.authenticated,
+                    user: user,
+                  ),
+                );
+
+                yield state.copyWith(
+                  status: SignUpStatus.recorded,
+                );
+                return;
+              }
+            }
+
+            yield state.copyWith(status: SignUpStatus.error);
             break;
           case 150: // Validation error
-            var messages = (apiResponse.data as Map).values.map((item) => item.toString());
-
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: messages.first.toString(),
+              messages: apiResponse.data as Map<String, dynamic>,
             );
             break;
           default: // Error, Unable to verify telephone
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: apiResponse.message,
+              messages: apiResponse.message,
             );
             break;
         }
-        return;
+      } else {
+        yield state.copyWith(status: SignUpStatus.error);
       }
-
-      yield state.copyWith(status: SignUpStatus.error);
     } catch (error) {
       yield state.copyWith(status: SignUpStatus.error);
     }
@@ -108,13 +145,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: messages.first.toString(),
+              messages: messages.first.toString(),
             );
             break;
           default: // Error
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: apiResponse.message,
+              messages: apiResponse.message,
             );
             break;
         }
@@ -156,13 +193,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: messages.first.toString(),
+              messages: messages.first.toString(),
             );
             break;
           default: // Error
             yield state.copyWith(
               status: SignUpStatus.error,
-              message: apiResponse.message,
+              messages: apiResponse.message,
             );
             break;
         }
@@ -178,22 +215,20 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Stream<SignUpState> _mapInputChangeToState(InputChange event) async* {
     var data = Map<String, String>.from(state.registrationData);
     data[event.attribute] = event.value;
-    
+
     yield state.copyWith(
-      status: _validateInputs() ? SignUpStatus.readyToRegister : (state.status == SignUpStatus.intermediate ? SignUpStatus.initial : SignUpStatus.intermediate),
+      status: _validateInputs(data) ? SignUpStatus.readyToRegister : SignUpStatus.intermediate,
       registrationData: data,
     );
   }
 
   // Others
 
-  bool _validateInputs() {
-    var checkUsername = state.registrationData.keys.contains('username') &&  StringUtils.isNotNullOrEmpty(state.registrationData['username']);
-    var checkPassword = state.registrationData.keys.contains('password') &&  StringUtils.isNotNullOrEmpty(state.registrationData['password']);
-    var checkLastName = state.registrationData.keys.contains('last_name') &&  StringUtils.isNotNullOrEmpty(state.registrationData['last_name']);
-    var checkFirstName = state.registrationData.keys.contains('first_name') &&  StringUtils.isNotNullOrEmpty(state.registrationData['first_name']);
-    var checkDateOfBirth = state.registrationData.keys.contains('data_of_birth') &&  StringUtils.isNotNullOrEmpty(state.registrationData['data_of_birth']);
+  bool _validateInputs(Map<String, String> data) {
+    var checkPassword = data.keys.contains('password') &&  StringUtils.isNotNullOrEmpty(data['password']);
+    var checkName = data.keys.contains('name') &&  StringUtils.isNotNullOrEmpty(data['name']);
+    var checkDateOfBirth = data.keys.contains('data_of_birth') &&  StringUtils.isNotNullOrEmpty(data['data_of_birth']);
 
-    return checkUsername && checkPassword && checkLastName && checkFirstName && checkDateOfBirth;
+    return checkPassword && checkName && checkDateOfBirth;
   }
 }

@@ -7,6 +7,7 @@ import 'package:stream/screens/init_screen/init_screen.dart';
 import 'package:stream/screens/introduction_screen/introduction_screen.dart';
 import 'package:stream/screens/signup_screen/signup_screen.dart';
 import 'package:stream/screens/signup_screen/signup_screen_bloc_provider.dart';
+import 'package:stream/screens/tabs_screen/tabs_screen.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
 
@@ -30,7 +31,11 @@ class RouteGenerator {
         );
       case SignupScreen.routeName:
         return MaterialPageRoute(
-          builder: (_) => SignupScreenBlocProvider(),
+          builder: (_) => const SignupScreenBlocProvider(),
+        );
+      case TabsScreen.routeName:
+        return MaterialPageRoute(
+          builder: (_) => TabsScreen(),
         );
       default:
         // If there is no such named route in the switch statement, e.g. /third

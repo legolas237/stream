@@ -22,13 +22,13 @@ class InterceptorWrapper extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     debugPrint("***** ${options.method}::${options.path}");
     if(options.data is FormData){
-      print(options.data);
+      debugPrint(options.data);
     }else{
       Hooks.prettyJson(options.data);
     }
 
     // Authorization
-    if(!options.headers.containsKey("Authorization")){
+    if(! options.headers.containsKey("Authorization")){
       final accessToken = StorageRepository.getToken();
       if(accessToken != null){
         options.headers['Authorization'] = "Bearer $accessToken";
@@ -51,7 +51,7 @@ class InterceptorWrapper extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    print(err);
+    debugPrint(err.toString());
     if (err.response != null) {
       Hooks.prettyJson(err.response!.data.toString());
     }

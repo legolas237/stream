@@ -236,7 +236,7 @@
   "@existingEmailError": {
     "description": ""
   },
-  "existingTelephoneError": "Ce numéro de téléphone est déjà utilisé. Choisissez en une autre ou connectez-vous s'il s'agit de vous",
+  "existingTelephoneError": "Ce numéro de téléphone est déjà utilisé. Choisissez en un autre ou connectez-vous s'il s'agit de vous",
   "@existingTelephoneError": {
     "description": ""
   },
@@ -250,6 +250,22 @@
   },
   "signupNotice": "C'est presque terminé. Remplissez le formulaire suivant",
   "@signupNotice": {
+    "description": ""
+  },
+  "fullName": "Nom complet",
+  "@fullName": {
+    "description": ""
+  },
+  "fullNameNotice": "Votre nom est celui que les autres utilisateurs veront dans vos commentaires & publications",
+  "@fullNameNotice": {
+    "description": ""
+  },
+  "setPhoto": "Changer la photo",
+  "@setPhoto": {
+    "description": ""
+  },
+  "skip": "Ignorer",
+  "@skip": {
     "description": ""
   }
 }

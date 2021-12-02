@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stream/blocs/auth/auth_bloc.dart';
 
 import 'package:stream/blocs/counter/counter_bloc.dart';
 import 'package:stream/repository/phone_code_repository.dart';
@@ -22,6 +23,7 @@ class SignupScreenBlocProvider extends StatelessWidget {
             return SignUpBloc(
               phoneCodeRepository: PhoneCodeRepository(),
               userRepository: UserRepository(),
+              authBloc: BlocProvider.of<AuthBloc>(context),
             );
           },
         ),

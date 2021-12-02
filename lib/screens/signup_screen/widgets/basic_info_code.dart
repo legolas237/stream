@@ -13,7 +13,7 @@ import 'package:stream/widgets/date_input/date_input.dart';
 import 'package:stream/widgets/divider/divider.dart';
 import 'package:stream/widgets/password_input/password_input.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
-import 'package:stream/widgets/username_input/username_input_bloc_provider.dart';
+import 'package:stream/widgets/text_error/text_error.dart';
 
 // ignore: must_be_immutable
 class BasicInformationWidget extends StatefulWidget {
@@ -28,6 +28,9 @@ class BasicInformationWidget extends StatefulWidget {
 }
 
 class _BasicInformationWidgetState extends State<BasicInformationWidget> {
+  bool passwordValidity = false;
+  TextEditingController passwordConfirmController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // Get theme palette
@@ -38,160 +41,182 @@ class _BasicInformationWidgetState extends State<BasicInformationWidget> {
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(
-            vertical: Constants.verticalPadding,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: Constants.horizontalPadding,
-                  right: MediaQuery.of(context).size.width * 0.1,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.createAccount,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.subtitle1!.merge(
-                    const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                    ),
+        return GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              vertical: Constants.verticalPadding,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: Constants.horizontalPadding,
+                    right: MediaQuery.of(context).size.width * 0.1,
                   ),
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: Constants.horizontalPadding,
-                  right: MediaQuery.of(context).size.width * 0.1,
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.signupNotice,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.caption!.merge(
-                    const TextStyle(
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              UsernameInputWidgetBlocProvider(
-                onChanged: (value) {
-                  bloc.add(InputChange(attribute: 'username', value: value.toString()));
-                },
-              ),
-              DividerWidget(),
-              ControlledInputWidget(
-                keyboardType: TextInputType.text,
-                hintText: AppLocalizations.of(context)!.lastName,
-                validateCallback: (value) {
-                  return value.length >= 2;
-                },
-                onChanged: (value) {
-                  bloc.add(InputChange(attribute: 'last_name', value: value));
-                },
-              ),
-              DividerWidget(),
-              ControlledInputWidget(
-                keyboardType: TextInputType.text,
-                hintText: AppLocalizations.of(context)!.firstName,
-                validateCallback: (value) {
-                  return value.length >= 2;
-                },
-                onChanged: (value) {
-                  bloc.add(InputChange(attribute: 'first_name', value: value));
-                },
-              ),
-              DividerWidget(),
-              DateInputWidget(
-                maxYear: DateTime.now().year,
-                minYear: 1950,
-                hintText: AppLocalizations.of(context)!.yourBirthday,
-                validateCallback: (value) {
-                  return value != null;
-                },
-                onChanged: (value) {
-                  if(value != null) {
-                    bloc.add(
-                      InputChange(
-                        attribute: 'date_of_birth',
-                        value: Hooks.formatDate(value, 'yyyy-MM-dd'),
-                      ),
-                    );
-                  }
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.horizontalPadding,
-                ),
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
+                  child: Text(
+                    AppLocalizations.of(context)!.createAccount,
+                    textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.subtitle1!.merge(
                       const TextStyle(
-                        fontSize: 11.5,
+                        fontSize: 18.0,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: AppLocalizations.of(context)!.legalReasons,
+                  ),
+                ),
+                const SizedBox(height: 4.0),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: Constants.horizontalPadding,
+                    right: MediaQuery.of(context).size.width * 0.1,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.signupNotice,
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.caption!.merge(
+                      const TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      TextSpan(
-                        text: ' ${AppLocalizations.of(context)!.readMore}',
-                        style: TextStyle(
-                          color: widget.palette.linkColor(1.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                ControlledInputWidget(
+                  readOnly: state.status == SignUpStatus.processing,
+                  keyboardType: TextInputType.text,
+                  hintText: AppLocalizations.of(context)!.fullName,
+                  validateCallback: (value) {
+                    return value.length >= 3;
+                  },
+                  onChanged: (value) {
+                    bloc.add(InputChange(attribute: 'name', value: value));
+                  },
+                  helperText: () {
+                    if(state.status == SignUpStatus.error && state.messages is Map && (state.messages as Map).keys.contains('name')) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          left: Constants.horizontalPadding,
+                          right: Constants.horizontalPadding,
+                          bottom: Constants.verticalPadding,
+                        ),
+                        child: TextErrorWidget(
+                          text: (state.messages['name'] as List).first.toString(),
+                        )
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
+                DividerWidget(),
+                DateInputWidget(
+                  readOnly: state.status == SignUpStatus.processing,
+                  maxYear: DateTime.now().year - 17,
+                  minYear: 1950,
+                  hintText: AppLocalizations.of(context)!.yourBirthday,
+                  validateCallback: (value) {
+                    return value != null;
+                  },
+                  onChanged: (value) {
+                    if(value != null) {
+                      bloc.add(
+                        InputChange(
+                          attribute: 'data_of_birth',
+                          value: Hooks.formatDate(value, 'yyyy-MM-dd'),
+                        ),
+                      );
+                    }
+
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  helperText: () {
+                    if(state.status == SignUpStatus.error && state.messages is Map && (state.messages as Map).keys.contains('data_of_birth')) {
+                      return Padding(
+                          padding: const EdgeInsets.only(
+                            left: Constants.horizontalPadding,
+                            right: Constants.horizontalPadding,
+                            bottom: Constants.verticalPadding,
+                          ),
+                          child: TextErrorWidget(
+                            text: (state.messages['data_of_birth'] as List).first.toString(),
+                          )
+                      );
+                    }
+
+                    return const SizedBox();
+                  },
+                ),
+                DividerWidget(),
+                PasswordInputWidget(
+                  readOnly: state.status == SignUpStatus.processing,
+                  hintText: AppLocalizations.of(context)!.yourPassword,
+                  onChanged: (value) {
+                    bloc.add(InputChange(attribute: 'password', value: value));
+                    setState(() {
+                      passwordValidity = value == passwordConfirmController.text;
+                    });
+                  },
+                  helperText: () {
+                    if(state.status == SignUpStatus.error && state.messages is Map && (state.messages as Map).keys.contains('password')) {
+                      return Padding(
+                          padding: const EdgeInsets.only(
+                            left: Constants.horizontalPadding,
+                            right: Constants.horizontalPadding,
+                            bottom: Constants.verticalPadding,
+                          ),
+                          child: TextErrorWidget(
+                            text: (state.messages['password'] as List).first.toString(),
+                          )
+                      );
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Constants.horizontalPadding,
+                      ),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.subtitle1!.merge(
+                            const TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: AppLocalizations.of(context)!.defineStrongPassword,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              DividerWidget(),
-              PasswordInputWidget(
-                hintText: AppLocalizations.of(context)!.yourPassword,
-                onChanged: (value) {
-                  bloc.add(InputChange(attribute: 'password', value: value));
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.horizontalPadding,
+                const SizedBox(height: 20.0),
+                DividerWidget(),
+                PasswordInputWidget(
+                  readOnly: state.status == SignUpStatus.processing,
+                  controller: passwordConfirmController,
+                  hintText: AppLocalizations.of(context)!.confirmPassword,
+                  validate: (value) {
+                    return passwordValidity;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      passwordValidity = state.registrationData.keys.contains('password') && state.registrationData['password'] == value;
+                    });
+                  },
                 ),
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.subtitle1!.merge(
-                      const TextStyle(
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: AppLocalizations.of(context)!.defineStrongPassword,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              DividerWidget(),
-              PasswordInputWidget(
-                hintText: AppLocalizations.of(context)!.confirmPassword,
-              ),
-              DividerWidget(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-              _buildActions(state),
-            ],
-          ),
+                DividerWidget(),
+                _buildActions(state),
+              ],
+            ),
+          )
         );
       }
     );
@@ -206,37 +231,59 @@ class _BasicInformationWidgetState extends State<BasicInformationWidget> {
       padding: const EdgeInsets.symmetric(
         horizontal: Constants.horizontalPadding,
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ButtonWidget(
-            onPressed: () {
-              if(canSend) {
-                BlocProvider.of<SignUpBloc>(context).add(
-                  MakeRegistration(),
-                );
-              }
-            },
-            enabled: canSend,
-            child: ButtonWidget.buttonTextChild(
-              context: context,
-              enabled: canSend,
-              text: AppLocalizations.of(context)!.registration,
-            ),
-          ),
-          const SizedBox(width: 28.0),
-          if(state.status == SignUpStatus.processing) SizedBox(
-            height: 18.0,
-            width: 18.0,
-            child: SpinnerWidget(
-              strokeWidth: 1.8,
-              colors: AlwaysStoppedAnimation<Color>(
-                widget.palette.secondaryBrandColor(1.0),
+          _buildErrorWrapper(state),
+          const SizedBox(height: 20.0),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ButtonWidget(
+                onPressed: () {
+                  if(canSend) {
+                    BlocProvider.of<SignUpBloc>(context).add(
+                      MakeRegistration(),
+                    );
+                  }
+                },
+                enabled: canSend,
+                child: ButtonWidget.buttonTextChild(
+                  context: context,
+                  enabled: canSend,
+                  text: AppLocalizations.of(context)!.registration,
+                ),
               ),
-            ),
-          ),
+              const SizedBox(width: 28.0),
+              if(state.status == SignUpStatus.processing) SizedBox(
+                height: 18.0,
+                width: 18.0,
+                child: SpinnerWidget(
+                  strokeWidth: 1.8,
+                  colors: AlwaysStoppedAnimation<Color>(
+                    widget.palette.secondaryBrandColor(1.0),
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
+  }
+
+  Widget _buildErrorWrapper(SignUpState state) {
+    if(state.status == SignUpStatus.error && state.messages is String) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: Constants.verticalPadding,
+        ),
+        child: TextErrorWidget(
+          text: state.messages ?? AppLocalizations.of(context)!.somethingWrong,
+        ),
+      );
+    }
+
+    return const SizedBox();
   }
 }

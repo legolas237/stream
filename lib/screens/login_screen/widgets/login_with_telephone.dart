@@ -7,6 +7,7 @@ import 'package:stream/screens/login_screen/blocs/send_otp_code/send_otp_code_bl
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/button/button.dart';
+import 'package:stream/widgets/date_input/date_input.dart';
 import 'package:stream/widgets/divider/divider.dart';
 import 'package:stream/widgets/otp_input/otp_input.dart';
 import 'package:stream/widgets/telephone_input/telephone_input_bloc_provider.dart';
@@ -56,7 +57,7 @@ class LoginWithTelephoneWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20.0),
-              TelephoneInputWidgetBlocProvider(
+              const TelephoneInputWidgetBlocProvider(
               ),
               DividerWidget(),
               const SizedBox(height: 20.0),

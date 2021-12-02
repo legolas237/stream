@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
@@ -8,9 +7,6 @@ import 'package:getwidget/size/gf_size.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_scaffold.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_tab.dart';
 import 'package:stream/screens/auth_screen/widgets/auth_tab_item.dart';
-import 'package:stream/screens/login_screen/blocs/send_otp_code/send_otp_code_bloc.dart';
-import 'package:stream/screens/login_screen/widgets/login_with_email.dart';
-import 'package:stream/screens/login_screen/widgets/login_with_telephone.dart';
 import 'package:stream/screens/signup_screen/signup_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
@@ -155,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      content: _buildContent(),
+      content: Container(),
       contentAppBar: _buildAppTitle(),
     );
   }
@@ -180,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ScaffoldWidget.buildTitle(
               context,
               widget.palette,
-              AppLocalizations.of(context)!.loginWith,
+              AppLocalizations.of(context)!.signIn,
             ),
           ),
           const SizedBox(width: 6.0),
@@ -208,21 +204,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       )
-    );
-  }
-
-  Widget _buildContent() {
-    if(_currentTab == 1) {
-      return LoginWithEmailWidget();
-    }
-
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SendOtpCodeBloc>(
-          create: (context) => SendOtpCodeBloc(),
-        )
-      ],
-      child: LoginWithTelephoneWidget(),
     );
   }
 }

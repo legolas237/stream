@@ -23,12 +23,12 @@ class TextErrorWidget extends StatelessWidget {
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyText2!.merge(
-                  TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.red,
-                    fontSize: size,
-                  ),
-                ),
+              TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.red,
+                fontSize: size,
+              ),
+            ),
           ),
         ),
         const SizedBox(width: 14.0),
@@ -37,7 +37,7 @@ class TextErrorWidget extends StatelessWidget {
           child: Icon(
             Icons.error_outlined,
             color: Colors.red,
-            size: 16,
+            size: 15.0,
           ),
         ),
       ],

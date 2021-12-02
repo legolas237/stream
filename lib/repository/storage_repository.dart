@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:stream/models/remote/token.dart';
 import 'dart:convert';
 
 import 'package:stream/models/util/config.dart';
@@ -68,8 +67,8 @@ class StorageRepository {
     return Constants.defaultLanguage.toLowerCase();
   }
 
-  static Future<void> setToken(Token token) async {
-    await _instance().write(tokenKey, token.accessToken);
+  static Future<void> setToken(String token) async {
+    await _instance().write(tokenKey, token);
   }
 
   static String? getToken() {

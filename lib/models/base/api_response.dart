@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:stream/models/remote/country.dart';
+import 'package:stream/models/remote/user.dart';
 
 class ApiResponse extends Equatable{
   ApiResponse({
@@ -27,6 +28,12 @@ class ApiResponse extends Equatable{
   List<Object?> get props => [data, message, code,];
 
   // Deserialization
+
+  User? deserializeUser() {
+    if(data == null) return null;
+
+    return User.fromJson(data);
+  }
 
   List<Country> deserializeCountries() {
     if(data == null) return [];

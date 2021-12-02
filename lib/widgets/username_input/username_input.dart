@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:stream/config/config.dart';
 
+import 'package:stream/config/config.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
@@ -18,13 +18,15 @@ class UserNameInputWidget extends StatefulWidget {
     this.onChanged,
     this.controller,
     this.checkUsername = true,
+    this.readOnly = false,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final bool checkUsername;
   final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final Function(String, bool)? onChanged;
 
   @override
   State<StatefulWidget> createState() => _UserNameInputWidgetState();
@@ -32,12 +34,14 @@ class UserNameInputWidget extends StatefulWidget {
 
 class _UserNameInputWidgetState extends State<UserNameInputWidget> {
   late TextEditingController controller;
+  late String oldInputValue;
 
   @override
   void initState() {
     super.initState();
 
     controller = widget.controller ?? TextEditingController();
+    oldInputValue = controller.text;
   }
 
   @override
@@ -52,7 +56,25 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
     return BlocConsumer<UsernameVerifyBloc, UsernameVerifyState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (widget.checkUsername && state.status == CheckStatus.success) {
+          if(widget.onChanged != null) {
+            widget.onChanged!(
+            controller.text,
+            true && _initialValidation(),
+          );
+          }
+        }
+
+        if (widget.checkUsername && state.status == CheckStatus.existing) {
+          if(widget.onChanged != null) {
+            widget.onChanged!(
+              controller.text,
+              false,
+            );
+          }
+        }
+      },
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +83,7 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
               children: [
                 Expanded(
                   child: AuthInputWidget(
+                    readOnly: widget.readOnly,
                     keyboardType: TextInputType.text,
                     controller: controller,
                     hintText: AppLocalizations.of(context)!.userName,
@@ -70,11 +93,19 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
                       bottom: 18.0,
                     ),
                     onChanged: (value) {
-                      if(widget.checkUsername && value.length >= 3) {
-                        BlocProvider.of<UsernameVerifyBloc>(context).add(
-                          Verify(username: value),
-                        );
+                      if(value != oldInputValue){
+                        if(widget.checkUsername && _initialValidation()) {
+                          BlocProvider.of<UsernameVerifyBloc>(context).add(
+                            Verify(username: value),
+                          );
+                        }
+                      } else {
+                        if(widget.onChanged != null) widget.onChanged!(value, _initialValidation(),);
                       }
+
+                      setState(() {
+                        oldInputValue = value;
+                      });
                     },
                   ),
                 ),
@@ -85,14 +116,14 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
                   ),
                   child: Row(
                     children: [
-                      Padding(
+                      if(! widget.readOnly) Padding(
                         padding: EdgeInsets.only(
                           right: widget.checkUsername ? 10.0 : 0.0,
                         ),
                         child: AppBarActionWidget(
                           onPressed: () {
                             controller.clear();
-                            if(widget.onChanged != null) widget.onChanged!('');
+                            if(widget.onChanged != null) widget.onChanged!('', false);
                           },
                           splashColor: widget.palette.splashLightColor(1.0),
                           highLightColor: widget.palette.highLightLightColor(1.0),
@@ -175,11 +206,11 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
        );
      }
 
-     if (widget.checkUsername && state.status == CheckStatus.success) {
+     if (_initialValidation() && widget.checkUsername && state.status == CheckStatus.success) {
        return Icon(
          Icons.check_circle,
          size: 15.0,
-         color: widget.palette.secondaryBrandColor(1.0),
+         color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
        );
      }
 
@@ -201,4 +232,10 @@ class _UserNameInputWidgetState extends State<UserNameInputWidget> {
 
      return const SizedBox();
    }
+
+   // Callback
+
+  bool _initialValidation() {
+    return controller.text.length >= 3;
+  }
 }

@@ -19,6 +19,10 @@ class TelephoneVerifyBloc extends Bloc<TelephoneVerifyEvent, TelephoneVerifyStat
     if (event is Verify) {
       yield* _mapVerifyToState(event);
     }
+
+    if (event is Reset) {
+      yield* _mapResetToState(event);
+    }
   }
 
   Stream<TelephoneVerifyState> _mapVerifyToState(Verify event) async* {
@@ -41,5 +45,9 @@ class TelephoneVerifyBloc extends Bloc<TelephoneVerifyEvent, TelephoneVerifyStat
     } catch (error) {
       yield state.copyWith(status: CheckStatus.failure,);
     }
+  }
+
+  Stream<TelephoneVerifyState> _mapResetToState(Reset event) async* {
+    yield state.copyWith(status: CheckStatus.initial);
   }
 }

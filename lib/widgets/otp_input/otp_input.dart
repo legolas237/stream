@@ -14,7 +14,8 @@ class OtpInputWidget extends StatefulWidget {
     this.onChanged,
     this.controller,
     this.validateCallback,
-    this.readOnly = true,
+    this.readOnly = false,
+    this.clearCallback,
   }) : super(key: key);
 
   late Palette palette;
@@ -23,6 +24,7 @@ class OtpInputWidget extends StatefulWidget {
   final TextEditingController? controller;
   final bool Function(String)? validateCallback;
   final Function(String)? onChanged;
+  final VoidCallback? clearCallback;
 
   @override
   State<StatefulWidget> createState() => _OtpInputWidgetState();
@@ -100,8 +102,12 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
      return Row(
        crossAxisAlignment: CrossAxisAlignment.center,
        children: [
-         AppBarActionWidget(
+         if(! widget.readOnly) AppBarActionWidget(
            onPressed: () {
+             if(widget.clearCallback != null) {
+               widget.clearCallback!();
+             }
+
              controller.clear();
              if(widget.onChanged != null) widget.onChanged!('');
              if(widget.validateCallback != null) {
@@ -121,8 +127,6 @@ class _OtpInputWidgetState extends State<OtpInputWidget> {
          _buildSuffixValidation(),
        ],
      );
-
-    return const SizedBox();
    }
 
   Widget _buildSuffixValidation() {

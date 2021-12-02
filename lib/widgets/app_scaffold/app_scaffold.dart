@@ -80,6 +80,8 @@ class ScaffoldWidget extends StatelessWidget {
   static Widget buildTitle(BuildContext context, Palette palette, String title, [Color? titleColor]) {
     return Text(
       title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.subtitle1!.merge(
         TextStyle(
           color: titleColor ?? palette.textColor(1.0),

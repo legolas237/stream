@@ -23,10 +23,13 @@ class DateInputWidget extends StatefulWidget {
     this.maxYear,
     this.format = Constants.datePickersFormat,
     this.validateCallback,
+    this.readOnly = false,
+    this.helperText,
   }) : super(key: key);
 
   late Palette palette;
 
+  final bool readOnly;
   final DateTime? value;
   final int? minYear;
   final int? maxYear;
@@ -34,6 +37,7 @@ class DateInputWidget extends StatefulWidget {
   final String? format;
   final bool Function(DateTime?)? validateCallback;
   final Function(DateTime?)? onChanged;
+  final Widget Function()? helperText;
 
   @override
   State<StatefulWidget> createState() => _DateInputWidgetState();
@@ -71,9 +75,10 @@ class _DateInputWidgetState extends State<DateInputWidget> {
     widget.palette = ThemeProvider.of(context)!.appTheme.palette;
 
     var style = Theme.of(context).textTheme.subtitle1!.merge(
-      const TextStyle(
+      TextStyle(
         fontSize: 13.0,
         fontWeight: FontWeight.w600,
+        color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.textColor(1.0),
       ),
     );
 
@@ -85,50 +90,59 @@ class _DateInputWidgetState extends State<DateInputWidget> {
       ),
     );
 
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              _showPicker();
-            },
-            child: Container(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                top: 18.0,
-                bottom: 18.0,
-              ),
-              child: Text(
-                value == null ? (widget.hintText ?? AppLocalizations.of(context)!.selectDate) : Hooks.formatDate(value!, Constants.datePickersFormat,),
-                style:  value == null ? hintStyle : style,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 4.0,
-          ),
-          child: Row(
-            children: [
-              _buildSuffix(),
-              const SizedBox(width: 10.0),
-              AppBarActionWidget(
-                onPressed: () {
-                  _showPicker();
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if(! widget.readOnly){
+                    _showPicker();
+                  }
                 },
-                splashColor: widget.palette.splashLightColor(1.0),
-                highLightColor: widget.palette.highLightLightColor(1.0),
-                icon: Icon(
-                  Icons.today_outlined,
-                  size: 18.0,
-                  color: widget.palette.captionColor(1.0),
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    top: 18.0,
+                    bottom: 18.0,
+                  ),
+                  child: Text(
+                    value == null ? (widget.hintText ?? AppLocalizations.of(context)!.selectDate) : Hooks.formatDate(value!, Constants.datePickersFormat,),
+                    style:  value == null ? hintStyle : style,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                right: 4.0,
+              ),
+              child: Row(
+                children: [
+                  _buildSuffix(),
+                  const SizedBox(width: 10.0),
+                  AppBarActionWidget(
+                    onPressed: () {
+                      if(! widget.readOnly){
+                        _showPicker();
+                      }
+                    },
+                    splashColor: widget.palette.splashLightColor(1.0),
+                    highLightColor: widget.palette.highLightLightColor(1.0),
+                    icon: Icon(
+                      Icons.today_outlined,
+                      size: 18.0,
+                      color: widget.palette.captionColor(1.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+        widget.helperText != null ? widget.helperText!() : const SizedBox(),
       ],
     );
   }
@@ -140,7 +154,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
        return Icon(
          Icons.check_circle,
          size: 15.0,
-         color: widget.palette.secondaryBrandColor(1.0),
+         color: widget.readOnly ? widget.palette.captionColor(0.8) : widget.palette.secondaryBrandColor(1.0),
        );
      }
 
@@ -266,7 +280,7 @@ class _DateInputWidgetState extends State<DateInputWidget> {
   // Callback
 
   DateTime _initialValue() {
-    return widget.value ?? DateTime.now();
+    return widget.value ?? (widget.maxYear == null ? DateTime.now() : DateTime(widget.maxYear!));
   }
 
   void _selectDate() {
