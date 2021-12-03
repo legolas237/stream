@@ -267,5 +267,72 @@
   "skip": "Ignorer",
   "@skip": {
     "description": ""
+  },
+  "unlock": "Déverrouiller",
+  "@unlock": {
+    "description": ""
+  },
+  "helloUser": "Hello, {name}",
+  "@helloUser": {
+    "description": "",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "confirmIdentity": "Pour accéder à votre compte, saisissez votre mot de passe afin de confirmer votre identité",
+  "@confirmIdentity": {
+    "description": ""
+  },
+  "useAnotherAccount": "Si vous ne reconnaissez pas ce compte cliquer sur \"UTILISER UN AUTRE COMPTE\"",
+  "@useAnotherAccount": {
+    "description": ""
+  },
+  "useAnotherAccountAction": "Utiliser un autre compte",
+  "@useAnotherAccountAction": {
+    "description": ""
+  },
+  "gallery": "Galerie",
+  "@gallery": {
+    "description": ""
+  },
+  "galleryPermission": "O'Stream a besoin d’accéder à votre galerie pour afficher les photos et vidéos",
+  "@galleryPermission": {
+    "description": ""
+  },
+  "selectPicture": "Sélectionner une photo",
+  "@selectPicture": {
+    "description": ""
+  },
+  "yourAccount": "Votre compte",
+  "@yourAccount": {
+    "description": ""
+  },
+  "cropped": "Recadrer",
+  "@cropped": {
+    "description": ""
+  },
+  "save": "Enregistrer",
+  "@save": {
+    "description": ""
+  },
+  "pickPhoto": "Photo",
+  "@pickPhoto": {
+    "description": ""
+  },
+  "close": "Close",
+  "@close": {
+    "description": ""
+  },
+  "selectFromGallery": "Galerie",
+  "@selectFromGallery": {
+    "description": ""
+  },
+  "useCamera": "Prendre une photo",
+  "@useCamera": {
+    "description": ""
+  },
+  "more": "Plus",
+  "@more": {
+    "description": ""
   }
 }

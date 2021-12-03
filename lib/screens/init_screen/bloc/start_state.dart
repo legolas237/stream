@@ -22,3 +22,8 @@ class StartLogin extends StartState {
   @override
   String toString() => 'StartLogin';
 }
+
+class StartUnlock extends StartState {
+  @override
+  String toString() => 'StartUnlock';
+}

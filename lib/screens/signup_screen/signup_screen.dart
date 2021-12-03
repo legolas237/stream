@@ -64,7 +64,7 @@ class _SignupScreenState extends State<SignupScreen> {
       },
       builder: (context, state) {
         return AuthScaffoldWidget(
-          contentBottom: state.step == 3 ? _buildSetAvatarAction(state) : Column(
+          contentBottom: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 16.0),
@@ -105,10 +105,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           context: context,
                           enabled: true,
                           text: AppLocalizations.of(context)!.signIn,
-                          textStyle: TextStyle(
-                            color: widget.palette.secondaryBrandColor(1),
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.w600,
+                          textStyle: Theme.of(context).textTheme.subtitle1!.merge(
+                            TextStyle(
+                              color: widget.palette.secondaryBrandColor(1),
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                         style: ButtonStyleWrapper(
@@ -298,57 +300,6 @@ class _SignupScreenState extends State<SignupScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSetAvatarAction(SignUpState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Constants.horizontalPadding,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ButtonWidget(
-            onPressed: () {},
-            enabled: true,
-            child: ButtonWidget.buttonTextChild(
-              context: context,
-              enabled: true,
-              text: AppLocalizations.of(context)!.setPhoto,
-            ),
-          ),
-          const SizedBox(height: 10.0),
-          ButtonWidget(
-            onPressed: () {},
-            enabled: true,
-            child: ButtonWidget.buttonTextChild(
-              context: context,
-              enabled: true,
-              text: AppLocalizations.of(context)!.skip,
-              textStyle: Theme.of(context).textTheme.subtitle1!.merge(
-                const TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            style: ButtonStyleWrapper(
-              palette: widget.palette,
-              enabled: true,
-            ).build(context).copyWith(
-              backgroundColor: MaterialStateColor.resolveWith((states) {
-                  return Colors.transparent;
-                },
-              ),
-              overlayColor: MaterialStateColor.resolveWith((states) {
-                return Colors.transparent;
-              }),
-            ),
-          ),
-        ],
       ),
     );
   }

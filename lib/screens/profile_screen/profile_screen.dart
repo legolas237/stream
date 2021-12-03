@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 
 import 'package:stream/blocs/auth/auth_bloc.dart';
 import 'package:stream/config/config.dart';
 import 'package:stream/models/remote/user.dart';
-import 'package:stream/screens/auth_screen/auth_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_bar_action/app_bar_action.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
-import 'package:stream/widgets/border_wrapper/border_wrapper.dart';
-import 'package:stream/widgets/circular_sized_avatar/circular_sized_avatar.dart';
+import 'package:stream/widgets/avatar/avatar_bloc_provider.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
@@ -55,49 +54,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ],
-      body: BorderlessWrapperWidget(
-        top: false,
-        bottom: false,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            vertical: Constants.verticalPadding,
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Constants.horizontalPadding,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircularSizedAvatarWidget(
-                        backgroundColor: widget.palette.borderColor(0.4),
-                        size: MediaQuery.of(context).size.height * 0.18,
-                        backgroundImage: NetworkImage(widget.user.avatar ?? '')
-                    ),
-                    const SizedBox(width: 20.0),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        AppLocalizations.of(context)!.setPhoto,
-                        textAlign: TextAlign.right,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.subtitle1!.merge(
-                          TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            color: widget.palette.secondaryBrandColor(1.0),
-                          ),
-                        ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+          vertical: Constants.verticalPadding,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Constants.horizontalPadding,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AvatarBlocProvider(),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    widget.user.smallName(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subtitle1!.merge(
+                      const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 6.0),
+                  Text(
+                    '@${FlutterLibphonenumber().formatNumberSync(widget.user.userDetail.telephone)}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.caption!.merge(
+                      const TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -109,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ScaffoldWidget.buildTitle(
       context,
       widget.palette,
-      widget.user.smallName(),
+      AppLocalizations.of(context)!.yourAccount,
     );
   }
 }

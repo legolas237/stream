@@ -273,7 +273,7 @@ class _BasicInformationWidgetState extends State<BasicInformationWidget> {
   }
 
   Widget _buildErrorWrapper(SignUpState state) {
-    if(state.status == SignUpStatus.error && state.messages is String) {
+    if(state.status == SignUpStatus.error && (state.messages== null || state.messages is String)) {
       return Padding(
         padding: const EdgeInsets.symmetric(
           vertical: Constants.verticalPadding,

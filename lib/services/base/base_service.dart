@@ -21,9 +21,7 @@ class InterceptorWrapper extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     debugPrint("***** ${options.method}::${options.path}");
-    if(options.data is FormData){
-      debugPrint(options.data);
-    }else{
+    if(options.data is! FormData){
       Hooks.prettyJson(options.data);
     }
 

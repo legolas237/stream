@@ -6,6 +6,7 @@ import 'package:stream/config/hooks.dart';
 import 'package:stream/screens/init_screen/bloc/start_bloc.dart';
 import 'package:stream/screens/introduction_screen/introduction_screen.dart';
 import 'package:stream/screens/tabs_screen/tabs_screen.dart';
+import 'package:stream/screens/unlock_screen/unlock_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';

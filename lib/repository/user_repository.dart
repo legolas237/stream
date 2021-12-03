@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stream/models/base/api_response.dart';
 import 'package:stream/models/remote/user.dart';
 import 'package:stream/repository/storage_repository.dart';
@@ -26,7 +28,15 @@ class UserRepository {
     return service.registration(data);
   }
 
+  Future<ApiResponse?> authenticate(String telephone, String password) async {
+    return service.authenticate(telephone, password);
+  }
+
   Future<ApiResponse?> authUser(String? token) async {
     return service.authUser(token);
+  }
+
+  Future<ApiResponse?> uploadAvatar(File avatar) async {
+    return service.uploadAvatar(avatar);
   }
 }

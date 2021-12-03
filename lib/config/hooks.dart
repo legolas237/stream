@@ -87,4 +87,15 @@ class Hooks {
     return  "0".compareTo(value[index]) <= 0 && "9".compareTo(value[index]) >= 0;
   }
 
+  static String formatNumber(int value) {
+    return toCurrencyString(
+      value.toString(),
+      shorteningPolicy: value > 9000000 ? ShorteningPolicy.RoundToMillions : ShorteningPolicy.NoShortening,
+      trailingSymbol: '',
+      useSymbolPadding: true,
+      thousandSeparator: ThousandSeparator.SpaceAndPeriodMantissa,
+      mantissaLength: 0,
+    );
+  }
+
 }

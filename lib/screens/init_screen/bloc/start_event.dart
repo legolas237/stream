@@ -5,7 +5,7 @@ abstract class StartEvent extends Equatable {
   const StartEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class StartReady extends StartEvent {

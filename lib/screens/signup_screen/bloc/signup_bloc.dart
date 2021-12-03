@@ -113,10 +113,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
             break;
         }
       } else {
-        yield state.copyWith(status: SignUpStatus.error);
+        yield state.copyWith(status: SignUpStatus.error, messages: null);
       }
     } catch (error) {
-      yield state.copyWith(status: SignUpStatus.error);
+      yield state.copyWith(status: SignUpStatus.error, messages: null);
     }
   }
 
@@ -158,9 +158,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         return;
       }
 
-      yield state.copyWith(status: SignUpStatus.error);
+      yield state.copyWith(status: SignUpStatus.error, messages: null);
     } catch (error) {
-      yield state.copyWith(status: SignUpStatus.error);
+      yield state.copyWith(status: SignUpStatus.error, messages: null);
     }
   }
 
@@ -206,9 +206,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         return;
       }
 
-      yield state.copyWith(status: SignUpStatus.error);
+      yield state.copyWith(status: SignUpStatus.error, messages: null);
     } catch (error) {
-      yield state.copyWith(status: SignUpStatus.error);
+      yield state.copyWith(status: SignUpStatus.error, messages: null);
     }
   }
 

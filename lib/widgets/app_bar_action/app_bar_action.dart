@@ -11,11 +11,13 @@ class AppBarActionWidget extends StatelessWidget {
     this.onPressed,
     this.splashColor,
     this.highLightColor,
+    this.color = Colors.transparent,
   }) : super(key: key);
 
   late Palette palette;
 
   final Icon icon;
+  final Color color;
   final VoidCallback? onPressed;
   final Color? splashColor;
   final Color? highLightColor;
@@ -30,6 +32,7 @@ class AppBarActionWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(50.0),
       color: Colors.transparent,
       child: IconButton(
+        color: color,
         padding: const EdgeInsets.all(0.0),
         onPressed: () {
           if (onPressed != null) {

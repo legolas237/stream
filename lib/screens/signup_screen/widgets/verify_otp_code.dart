@@ -265,7 +265,7 @@ class _VerifyOtpCodeWidgetState extends State<VerifyOtpCodeWidget> {
   }
 
   Widget _buildErrorWrapper(SignUpState state) {
-    if(state.status == SignUpStatus.error) {
+    if(state.status == SignUpStatus.error && (state.messages== null || state.messages is String)) {
       return Padding(
         padding: const EdgeInsets.only(
           left: Constants.horizontalPadding,

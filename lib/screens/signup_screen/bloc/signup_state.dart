@@ -19,7 +19,7 @@ class SignUpState extends Equatable {
     this.step = 0,
     this.phoneNumber,
     this.registrationData = const {},
-    this.messages = const {},
+    this.messages,
   });
 
   final SignUpStatus status;
