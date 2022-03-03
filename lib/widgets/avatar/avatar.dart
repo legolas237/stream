@@ -8,6 +8,7 @@ import 'package:stream/blocs/auth/auth_bloc.dart';
 import 'package:stream/config/config.dart';
 import 'package:stream/models/remote/user.dart';
 import 'package:stream/screens/cropper_screen/cropper_screen.dart';
+import 'package:stream/screens/gallery_screen/gallery_screen.dart';
 import 'package:stream/screens/gallery_screen/widgets/gallery_option_item.dart';
 import 'package:stream/screens/gallery_screen/gallery_screen_bloc_provider.dart';
 import 'package:stream/screens/use_camera_screen/use_camera_screen.dart';
@@ -56,9 +57,10 @@ class _AvatarWidgetState extends State<AvatarWidget> {
             fit: StackFit.expand,
             children: [
               CircularSizedAvatarWidget(
-                backgroundColor: widget.palette.borderColor(0.4),
+                backgroundColor: widget.palette.borderColor(0.5),
                 size: MediaQuery.of(context).size.height * 0.16,
-                backgroundImage: NetworkImage(widget.user.profilePicture ?? ''),),
+                backgroundImage: NetworkImage(widget.user.profilePicture ?? ''),
+              ),
               if(state is! Uploading) Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
@@ -222,15 +224,18 @@ class _AvatarWidgetState extends State<AvatarWidget> {
   }
 
   void _pickImage() async {
-    File? result = await Navigator.push<File>(
+    List<File?>? result = await Navigator.push<List<File?>>(
       context,
       MaterialPageRoute(
-        builder: (_) => const GalleryScreenBlocProvider(),
+        builder: (_) => const GalleryScreenBlocProvider(
+          selectionMode: SelectionMode.mono,
+          galleryMode: GalleryMode.photo,
+        ),
       ),
     );
 
-    if (result != null) {
-      _cropImage(result);
+    if (result != null && result.isNotEmpty && result.first != null) {
+      _cropImage(result.first!);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:stream/config/config.dart';
 
 import 'package:stream/screens/gallery_screen/bloc/gallery_bloc.dart';
 import 'package:stream/screens/gallery_screen/widgets/asset_path_item.dart';
@@ -15,8 +16,16 @@ import 'package:stream/widgets/border_wrapper/border_wrapper.dart';
 import 'package:stream/widgets/error_wrapper/error_wrapper.dart';
 import 'package:stream/widgets/spinner/spinner.dart';
 
+enum DisplayMode {
+  list, grid
+}
+
 enum GalleryMode {
-  photo, video
+  photo, video, mixed
+}
+
+enum SelectionMode {
+  mono, multi
 }
 
 // ignore: must_be_immutable
@@ -25,9 +34,14 @@ class GalleryScreen extends StatefulWidget {
 
   GalleryScreen({
     Key? key,
+    this.galleryMode = GalleryMode.photo,
+    this.selectionMode = SelectionMode.mono,
   }) : super(key: key);
 
   late Palette palette;
+
+  final GalleryMode? galleryMode;
+  final SelectionMode? selectionMode;
 
   @override
   State<StatefulWidget> createState() => _GalleryScreenState();
@@ -35,13 +49,18 @@ class GalleryScreen extends StatefulWidget {
 
 class _GalleryScreenState extends State<GalleryScreen> {
   late int galleryPermission;
-  late GalleryMode galleryMode = GalleryMode.photo;
+  late GalleryMode galleryMode;
+  late SelectionMode selectionMode;
+  late DisplayMode displayMode;
 
   @override
   void initState() {
     super.initState();
 
+    galleryMode = widget.galleryMode ?? GalleryMode.photo;
+    selectionMode = widget.selectionMode ?? SelectionMode.mono;
     galleryPermission = -1;
+    displayMode = DisplayMode.grid;
   }
 
   @override
@@ -63,51 +82,58 @@ class _GalleryScreenState extends State<GalleryScreen> {
             appBar: AppBar(
               backgroundColor: widget.palette.scaffoldColor(1.0),
               automaticallyImplyLeading: false,
-              centerTitle: true,
-              title: _buildAppBarTitle(),
+              centerTitle: false,
+              title: _buildAppBarTitle(state),
               actions: [
-                if(state.status == GalleryStatus.fetched) Row(
+                if(state.selectedAssets.isEmpty && galleryMode != GalleryMode.mixed && (state.status == GalleryStatus.fetched || state.status == GalleryStatus.intermediate)) Row(
                   children: [
                     GalleryTabItemWidget(
-                      icon: Icons.photo,
+                      text: AppLocalizations.of(context)!.photo,
                       isSelected: galleryMode == GalleryMode.photo,
-                      onSelected: () {
-                        setState(() {
-                          galleryMode = GalleryMode.photo;
-                        });
-                      },
                     ),
                     GalleryTabItemWidget(
-                      icon: Icons.videocam,
+                      text: AppLocalizations.of(context)!.videos,
                       isSelected: galleryMode == GalleryMode.video,
-                      onSelected: () {
-                        setState(() {
-                          galleryMode = GalleryMode.video;
-                        });
-                      },
                     ),
                   ],
                 ),
-                const SizedBox(width: 10.0),
-                state.status == GalleryStatus.fetching
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(width: 14.0),
-                          SizedBox(
-                            height: 16.0,
-                            width: 16.0,
-                            child: SpinnerWidget(
-                              strokeWidth: 1.8,
-                              colors: AlwaysStoppedAnimation<Color>(
-                                widget.palette.secondaryBrandColor(1.0),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 14.0),
-                        ],
-                      )
-                    : const SizedBox(),
+                const SizedBox(width: 8.0),
+                if(state.selectedAssets.isNotEmpty) AppBarActionWidget(
+                  splashColor: widget.palette.splashLightColor(1.0),
+                  highLightColor: widget.palette.highLightLightColor(1.0),
+                  icon: Icon(
+                    Icons.check_outlined,
+                    color: widget.palette.textColor(1.0),
+                    size: 22,
+                  ),
+                  onPressed: () async {
+                    List<File?> files = [];
+
+                    for (var element in state.selectedAssets) {
+                      var file = await element.file;
+                      files.add(file);
+                    }
+
+                    Navigator.pop<List<File?>>(context, files);
+                  },
+                ),
+                if(state.status == GalleryStatus.fetching) Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const SizedBox(width: 14.0),
+                    SizedBox(
+                      height: 16.0,
+                      width: 16.0,
+                      child: SpinnerWidget(
+                        strokeWidth: 1.8,
+                        colors: AlwaysStoppedAnimation<Color>(
+                          widget.palette.secondaryBrandColor(1.0),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 14.0),
+                  ],
+                ),
               ],
               leading: AppBarActionWidget(
                 splashColor: widget.palette.splashLightColor(1.0),
@@ -146,20 +172,78 @@ class _GalleryScreenState extends State<GalleryScreen> {
       return _buildNoCameraPermission();
     }
 
-    if (state.status == GalleryStatus.fetched) {
+    if (state.status == GalleryStatus.fetched || state.status == GalleryStatus.intermediate) {
       return CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: Constants.horizontalPadding,
+                top: 6.0,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.displayIn,
+                      style: Theme.of(context).textTheme.caption!.merge(
+                        const TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      AppBarActionWidget(
+                        splashColor: widget.palette.splashLightColor(1.0),
+                        highLightColor: widget.palette.highLightLightColor(1.0),
+                        icon: Icon(
+                          Icons.grid_view,
+                          color: displayMode == DisplayMode.grid ? widget.palette.textColor(1.0) : widget.palette.captionColor(1.0),
+                          size: 18.0,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            displayMode = DisplayMode.grid;
+                          });
+                        },
+                      ),
+                      AppBarActionWidget(
+                        splashColor: widget.palette.splashLightColor(1.0),
+                        highLightColor: widget.palette.highLightLightColor(1.0),
+                        icon: Icon(
+                          Icons.format_list_bulleted,
+                          color: displayMode == DisplayMode.list ? widget.palette.textColor(1.0) : widget.palette.captionColor(1.0),
+                          size: 18.0,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            displayMode = DisplayMode.list;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SliverToBoxAdapter(
             child: SizedBox(height: 20.0),
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                return AssetPathItemWidget(
-                  data: state.assets[index],
-                  onSelect: _selectImage,
-                );
+            delegate: SliverChildBuilderDelegate((context, index) {
+              var asset = state.assets[index];
+
+              return AssetPathItemWidget(
+                data: asset,
+                onSelect: _selectImage,
+                displayMode: displayMode,
+              );
               },
               childCount: state.assets.length,
             ),
@@ -190,22 +274,31 @@ class _GalleryScreenState extends State<GalleryScreen> {
     );
   }
 
-  Widget _buildAppBarTitle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Text(
-            AppLocalizations.of(context)!.gallery,
-            style: Theme.of(context).textTheme.subtitle1!.merge(
-              const TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+  Widget _buildAppBarTitle(GalleryState state) {
+    if(state.selectedAssets.isNotEmpty) {
+      return Text(
+        AppLocalizations.of(context)!.selectCount(
+          state.selectedAssets.length,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.subtitle1!.merge(
+          const TextStyle(
+            fontWeight: FontWeight.w600,
           ),
         ),
+      );
+    }
 
-      ],
+    return Text(
+      AppLocalizations.of(context)!.gallery,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: Theme.of(context).textTheme.subtitle1!.merge(
+        const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
@@ -224,6 +317,12 @@ class _GalleryScreenState extends State<GalleryScreen> {
   void _selectImage(AssetEntity asset) async {
     File? file = await asset.file;
 
-    Navigator.pop<File>(context, file);
+    if(selectionMode == SelectionMode.multi) {
+      BlocProvider.of<GalleryBloc>(context).add(
+        SelectAsset(asset: asset),
+      );
+    } else {
+      Navigator.pop<List<File?>>(context, [file]);
+    }
   }
 }

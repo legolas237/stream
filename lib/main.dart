@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'package:stream/app/app.dart';
 import 'package:stream/blocs/auth/auth_bloc.dart';
@@ -12,10 +13,15 @@ import 'package:stream/repository/user_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hooks.initServices();
-
   Bloc.observer = SimpleBlocObserver();
+  // await StorageRepository.clearAll();
+
+  // Workmanager().initialize(
+  //   taskCallbackDispatcher, // The top level function, aka callbackDispatcher
+  //   isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  // );
+
   runApp(const OStreamApp());
 }
 
@@ -58,8 +64,26 @@ class OStreamApp extends StatelessWidget {
             },
           ),
         ],
-        child: App(),
+        child: const App(),
       ),
     );
   }
+}
+
+// Executive tasks
+
+void taskCallbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    var taskResult = true;
+    debugPrint("Native called background task started: $task");
+
+    switch (task) {
+      case Workmanager.iOSBackgroundTask:
+        debugPrint("iOS background fetch delegate ran");
+        break;
+    }
+
+    debugPrint("Native called background task ended: $task");
+    return Future.value(taskResult);
+  });
 }

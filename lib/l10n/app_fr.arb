@@ -334,5 +334,28 @@
   "more": "Plus",
   "@more": {
     "description": ""
+  },
+  "photo": "Photos",
+  "@photo": {
+    "description": ""
+  },
+  "videos": "Vidéos",
+  "@videos": {
+    "description": ""
+  },
+  "selectCount": "{count} Sélectionné(s)",
+  "@selectCount": {
+    "description": "",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "displayIn": "Afficher en",
+  "@displayIn": {
+    "description": ""
+  },
+  "unknown": "Inconnu",
+  "@unknown": {
+    "description": ""
   }
 }

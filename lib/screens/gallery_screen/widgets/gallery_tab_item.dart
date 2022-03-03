@@ -10,12 +10,12 @@ class GalleryTabItemWidget extends StatelessWidget {
     Key? key,
     this.onSelected,
     this.isSelected = false,
-    required this.icon,
+    required this.text,
   }) : super(key: key);
 
   late Palette palette;
 
-  final IconData icon;
+  final String text;
   final bool isSelected;
   final Function? onSelected;
 
@@ -24,38 +24,23 @@ class GalleryTabItemWidget extends StatelessWidget {
     // Get theme palette
     palette = ThemeProvider.of(context)!.appTheme.palette;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
+    return Container(
+      // margin: const EdgeInsets.only(left: 6.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      alignment: Alignment.center,
+      child: GestureDetector(
         onTap: () {
           if(onSelected != null) onSelected!();
         },
-        splashColor: palette.splashLightColor(1.0),
-        highlightColor: palette.highLightLightColor(1.0),
-        hoverColor: palette.highLightLightColor(1.0),
-        child: Container(
-          margin: const EdgeInsets.only(left: 10.0),
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: 2.0,
-                color: isSelected ? palette.secondaryBrandColor(1.0) : Colors.transparent,
-              ),
-            ),
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 18.0,
-                color: isSelected ? palette.secondaryBrandColor(1.0) : palette.captionColor(0.6),
-              )
-            ],
-          ),
+        child: Text(
+            text,
+            style: Theme.of(context).textTheme.subtitle1!.merge(
+                TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? palette.textColor(1.0) : palette.captionColor(1.0),
+                )
+            )
         ),
       ),
     );

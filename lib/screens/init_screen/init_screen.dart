@@ -6,7 +6,6 @@ import 'package:stream/config/hooks.dart';
 import 'package:stream/screens/init_screen/bloc/start_bloc.dart';
 import 'package:stream/screens/introduction_screen/introduction_screen.dart';
 import 'package:stream/screens/tabs_screen/tabs_screen.dart';
-import 'package:stream/screens/unlock_screen/unlock_screen.dart';
 import 'package:stream/theme/palette.dart';
 import 'package:stream/theme/theme_provider.dart';
 import 'package:stream/widgets/app_scaffold/app_scaffold.dart';
@@ -44,41 +43,24 @@ class InitScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 52.0,
-                        width: 52.0,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/launcher_for_init.png"
-                              ),
-                              fit: BoxFit.fitHeight,
-                            )
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.subtitle1!.merge(
+                        const TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
-                      RichText(
-                        text: TextSpan(
-                          style: Theme.of(context).textTheme.subtitle1!.merge(
-                            const TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'O\'',
-                              style: TextStyle(color: palette.secondaryBrandColor(1.0),),
-                            ),
-                            const TextSpan(
-                              text: ' Stream',
-                            ),
-                          ],
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'O\'',
+                          style: TextStyle(color: palette.secondaryBrandColor(1.0),),
                         ),
-                      ),
-                    ],
+                        const TextSpan(
+                          text: ' Stream',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

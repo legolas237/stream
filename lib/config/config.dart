@@ -13,7 +13,7 @@ class Constants {
   static const String defaultLanguage = 'EN';
   static const List<String> supportedLanguages = ['EN', 'FR'];
   static const defaultCurrency = 'XAF';
-  static const galleryPerPage = 10;
+  static const galleryPerPage = 100;
   static const datePickersFormat = 'EEE, d MMM yyyy';
   static const defaultCountry = Country(dialCode: '+237', alphaCode: 'CM');
   static Map mapDateTimeLocale = {

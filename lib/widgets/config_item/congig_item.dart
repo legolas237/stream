@@ -45,10 +45,7 @@ class ConfigItemWidget extends StatelessWidget {
     var border = BorderSide(
       color: ThemeProvider.of(
         context,
-      )!
-          .appTheme
-          .palette
-          .borderColor(0.6),
+      )!.appTheme.palette.borderColor(0.6),
       width: 1,
     );
 

@@ -98,4 +98,8 @@ class Hooks {
     );
   }
 
+  static String readableDuration(Duration duration) {
+    return duration.toString().substring(2, 7);
+  }
+
 }

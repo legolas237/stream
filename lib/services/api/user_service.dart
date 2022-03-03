@@ -4,7 +4,9 @@ import 'package:path/path.dart';
 
 import 'package:dio/dio.dart';
 import 'package:stream/models/base/api_response.dart';
+import 'package:stream/models/remote/user.dart';
 import 'package:stream/repository/device_repository.dart';
+import 'package:stream/repository/storage_repository.dart';
 import 'package:stream/services/base/base_service.dart';
 
 class UserService extends ApiClient {
@@ -28,13 +30,12 @@ class UserService extends ApiClient {
 
   Future<ApiResponse?> verifyEmail(String email) async {
     var response = await httpClient.get(
-      Uri.parse(baseUrl!
-              .replaceFirst(
-                '{1}',
-                'public/users/email/{2}',
-              )
-              .replaceFirst('{2}', email))
-          .toString(),
+      Uri.parse(
+        baseUrl!.replaceFirst(
+          '{1}',
+          'public/users/email/{2}',
+        ).replaceFirst('{2}', email),
+      ).toString(),
     );
 
     if (response.statusCode == 200) {
@@ -46,13 +47,13 @@ class UserService extends ApiClient {
 
   Future<ApiResponse?> verifyUserName(String username) async {
     var response = await httpClient.get(
-      Uri.parse(baseUrl!
-              .replaceFirst(
-                '{1}',
-                'public/users/username/{2}',
-              )
-              .replaceFirst('{2}', username))
-          .toString(),
+      Uri.parse(
+        baseUrl!.replaceFirst(
+          '{1}',
+          'public/users/username/{2}',
+        )
+        .replaceFirst('{2}', username),
+      ).toString(),
     );
 
     if (response.statusCode == 200) {
@@ -129,6 +130,38 @@ class UserService extends ApiClient {
 
     if (response.statusCode == 200) {
       return ApiResponse.fromJson(json.decode(response.data));
+    }
+
+    return null;
+  }
+
+  Future<User?> requestUserData() async {
+    var token = StorageRepository.getToken();
+
+    if(token != null) {
+      try{
+        var response = await httpClient.get(
+          Uri.parse(baseUrl!.replaceFirst('{1}', 'auth/user')).toString(),
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          ApiResponse apiResponse = ApiResponse.fromJson(json.decode(response.data));
+
+          if(apiResponse.code == 100) {
+            // Set user
+            User? user = apiResponse.deserializeUser();
+            if(user != null) {
+              await StorageRepository.setUser(user);
+              return user;
+            }
+          }
+        }
+      } catch(error) {
+        return null;
+      }
     }
 
     return null;
